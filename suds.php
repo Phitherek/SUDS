@@ -16,21 +16,21 @@ if(file_exists("suds_settings.php")) {
 		for($id = 1; $id <= $rows; $id++) {
 			$query=mysql_query("SELECT filename FROM ".$prefix."files_main WHERE id=".$id);
 			$filename=mysql_fetch_array($query);
-		$query=mysql_query("SELECT desc FROM ".$prefix."files_main WHERE id=".$id);
+		$query=mysql_query("SELECT `desc` FROM ".$prefix."files_main WHERE id=".$id);
 		$desc=mysql_fetch_array($query);
 		if($filename != NULL) {
 		if($desc != NULL) {
 		?>
-		<a class = "suds_link_ok" href="suds_files/<?php echo $filename; ?>"><?php echo $desc; ?></a><br />
+		<a class = "suds_link_ok" href="suds_files/<?php echo $filename['filename']; ?>"><?php echo $desc['desc']; ?></a><br />
 		<?php
 		} else {
 		?>
-		<a class = "suds_link_nodesc" href="suds_files/<?php echo $filename; ?>"><?php echo $filename; ?></a><br />
+		<a class = "suds_link_nodesc" href="suds_files/<?php echo $filename['filename']; ?>"><?php echo $filename['filename']; ?></a><br />
 		<?php
 		}
 		} else if($desc != NULL) {
 		?>
-		<p class="suds_desconly"><?php echo $desc; ?> (Brak odnośnika!)</p><br />
+		<p class="suds_desconly"><?php echo $desc['desc']; ?> (Brak odnośnika!)</p><br />
 		<?php
 		} else {
 		?>
