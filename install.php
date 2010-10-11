@@ -124,7 +124,7 @@ Błąd! Tabela nie została utworzona! Ustawienia nie zostaną zapisane!<br />
 $fail=1;
 }
 if($fail!=1) {
-echo("Tworzenie podkatalogu dla plików SUDS...");
+echo("Tworzenie podkatalogu dla plików SUDS...<br />");
 mkdir("suds_files");
 $ustawienia=fopen("suds_settings.php","w");
 flock($ustawienia,LOCK_EX);
