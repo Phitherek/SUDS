@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Phitherek_' s SUDS - Instalacja</title>
+<title>Phitherek_' s SUDS - MOD: SLMlock - Instalacja</title>
 <META http-equiv="content-type" content="text/html; charset=utf-8" />
 </head>
 <body>
@@ -16,17 +16,6 @@ if($_POST['beginpass']=="sNx36PmO") {
 }
 if($_SESSION['login'] == 1) {
 $step = $_POST['go'];
-if($step == 4) {
-if($_POST['modpass']!=NULL) {	
-if($_POST['modpass'] != $_POST['modcheck']) {
-$step = 3;
-echo("Hasło moderatora nie zgadza się z powtórzonym hasłem moderatora!");
-}
-} else {
-$step = 3;
-echo("Nie wpisałeś hasła moderatora!");
-}
-}
 if($step == 1) {
 ?>
 <h1>Ustawianie MySQL</h1><br />
@@ -65,7 +54,7 @@ if($zapytanie == 1) {
 echo("Nowa baza danych utworzona poprawnie!<br />");
 } else {
 ?>
-Błąd podczas tworzenia nowej bazy danych!<br />
+Błąd podczas tworzenia nowej bazy danych!<br />fputs($ustawienia,'$modpass="'.$_POST['modpass'].'"'.";\n");
 <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
 <input type="hidden" name="go" value="2" />
 <input type="submit" value="Powrót" />
@@ -81,8 +70,6 @@ Nazwa użytkownika MySQL: <input type="text" name="dbuser" value="<?php echo $_P
 Hasło MySQL: <input type="password" name="dbpass" /><br />
 Nazwa bazy danych: <input type="text" name="dbname" value="<?php echo $_POST['dbname']; ?>" /><br />
 Prefiks tabeli: <input type="text" name="prefix" value="suds_" /><br />
-Hasło moderatora: <input type="password" name="modpass" /><br />
-Powtórz hasło moderatora: <input type="password" name="modcheck" /><br />
 <input type="hidden" name="go" value="4" />
 <input type="submit" value="Wykonaj i zapisz" />
 </form>
@@ -96,8 +83,6 @@ Nazwa użytkownika MySQL: <input type="text" name="dbuser" value="root" /><br />
 Hasło MySQL: <input type="password" name="dbpass" /><br />
 Nazwa bazy danych: <input type="text" name="dbname" value="suds" /><br />
 Prefiks tabeli: <input type="text" name="prefix" value="suds_" /><br />
-Hasło moderatora: <input type="password" name="modpass" /><br />
-Powtórz hasło moderatora: <input type="password" name="modcheck" /><br />
 <input type="hidden" name="go" value="4" />
 <input type="submit" value="Wykonaj i zapisz" />
 </form>
@@ -134,7 +119,6 @@ fputs($ustawienia,'$dbuser="'.$_POST['dbuser'].'"'.";\n");
 fputs($ustawienia,'$dbpass="'.$_POST['dbpass'].'"'.";\n");
 fputs($ustawienia,'$dbname="'.$_POST['dbname'].'"'.";\n");
 fputs($ustawienia,'$prefix="'.$_POST['prefix'].'"'.";\n");
-fputs($ustawienia,'$modpass="'.$_POST['modpass'].'"'.";\n");
 fputs($ustawienia,'?>');
 flock($ustawienia,LOCK_UN);
 fclose($ustawienia);
@@ -143,7 +127,7 @@ echo("Ustawienia zostały zapisane!<br />");
 } else {
 echo("Nie można było zapisać ustawień! Sprawdź, czy katalog z plikami systemu SUDS ma uprawnienia 777 (lub rwxrwxrwx), jeżeli nie, to zmień je, a następnie usuń tabelę (prefix)_files_main (i bazę danych) z serwera MySQL, zakończ sesję przeglądarki, a następnie uruchom ten plik install.php ponownie!<br />");
 }
-echo("<br /> Koniec instalacji! WAŻNE: Skasuj ten plik install.php z serwera, aby nikt nie mógł zmienić Twoich ustawień!");
+echo("<br /> Koniec instalacji! WAŻNE: Skasuj ten plik install.php z serwera, aby nikt nie mógł zmienić Twoich ustawień! Aby korzystać z SUDS z modem SLMlock, musisz zainstalować SLM. W tym celu uruchom <a href=".'"slm_install.php"'.">slm_install.php</a>, jeżeli jeszcze tego nie zrobiłeś/aś.");
 }
 }
 } else {

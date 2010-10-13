@@ -1,11 +1,15 @@
 <html>
 <head>
-<title>Phitherek_' s SUDS - Główny plik systemu - ten tytuł można później zmienić</title>
+<title>Phitherek_' s SUDS - MOD: SLMlock - Główny plik systemu - ten tytuł można później zmienić</title>
 <META http-equiv="content-type" content="text/html; charset=utf-8" />
 <!-- Tutaj ewentualnie dołączyć plik stylu CSS -->
 </head>
 <body>
 <?php
+include("slm_include/loginform.php");
+include("slm_include/userinfo.php");
+slm_userinfo(1,0,"login.php","logout.php");
+slm_loginpage_sub(1,0,"register.php");
 if(file_exists("suds_settings.php")) {
 	include("suds_settings.php");
 	$baza=mysql_connect($serek, $dbuser, $dbpass) or die("Nie można się połączyć z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
@@ -57,6 +61,7 @@ if(file_exists("suds_settings.php")) {
 ?>
 <a class="suds_admin" href="suds_mod.php" title="Moderacja">Moderacja</a><br />
 <hr />
-<p class="suds_footer">Powered by SUDS | &copy; 2010 by Phitherek_</p>
+<p class="suds_footer">Powered by SUDS | &copy; 2010 by Phitherek_<br />
+MOD: SLMlock | &copy; 2010 by Phitherek_ | uses SLM &copy; 2010 by Phitherek</p>
 </body>
 </html>

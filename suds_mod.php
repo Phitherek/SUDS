@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Phitherek_' s SUDS - System moderacji - tytuł może być później zmieniony</title>
+<title>Phitherek_' s SUDS - MOD: SLMlock - System moderacji - tytuł może być później zmieniony</title>
 <META http-equiv="content-type" content="text/html; charset=utf-8" />
 <!-- Tutaj ewentualnie dołączyć plik stylu CSS -->
 </head>
@@ -11,15 +11,14 @@ if (!isset($_SESSION['started'])) {
 session_regenerate_id();
 $_SESSION['started'] = true;
 }
+include("slm_include/adminonly.php");
+include("slm_include/userinfo.php");
+include("slm_include/loginform.php");
+slm_userinfo(1,0,"login.php","logout.php");
+slm_loginpage_sub(1,0,"register.php");
+slm_adminonly("suds.php","suds.php","Indeks systemu SUDS");
 if(file_exists("suds_settings.php")) {
 	include("suds_settings.php");
-	if($_POST['modlogin'] == 1) {
-	if($_POST['modlogin_pass'] == $modpass) {
-	$_SESSION['mod_login'] = 1;
-	session_regenerate_id();
-	}
-	}
-	if($_SESSION['mod_login'] == 1) {
 	if(file_exists("install.php")) {
 	?>
 	<p class="suds_error">Poważne zagrożenie bezpieczeństwa - nie usunąłeś install.php!</p><br /><br />
@@ -29,7 +28,8 @@ if(file_exists("suds_settings.php")) {
 	<h2 class="suds_modmenu">Menu systemu moderacji:</h2><br /><br />
 	<a class="suds_modmenu" href="<?php echo $_SERVER["PHP_SELF"]; ?>?action=show" title="Wyświetl i moderuj pliki">Wyświetl i moderuj pliki</a><br />
 	<a class="suds_modmenu" href="<?php echo $_SERVER["PHP_SELF"]; ?>?action=upload" title="Dodaj nowy plik">Dodaj nowy plik</a><br />
-	<a class="suds_modmenu" href="<?php echo $_SERVER["PHP_SELF"]; ?>?action=logout" title="Wyloguj">Wyloguj</a><br />
+	<a class="suds_modmenu" href="register.php" title="Zarejestruj użytkownika SLM">Zarejestruj użytkownika SLM</a><br />
+	<a class="suds_modmenu" href="logout.php" title="Wyloguj">Wyloguj</a><br />
 	<hr />
 	<?php
 	if($_GET['action'] == "show") {
@@ -223,26 +223,11 @@ if(file_exists("suds_settings.php")) {
 		<p class="suds_error">Nie udało się wczytać ID pliku! Plik nie mógł zostać usunięty!</p><br />
 		<?php
 		}
-		}
-	} else if($_GET['action'] == "logout") {
-		$_SESSION['mod_login'] = 0;
-		?>
-		<p class="suds_info">Wylogowano Cię z systemu moderacji SUDS! Możesz teraz przejść na stronę główną systemu, lub zalogować się jeszcze raz, ponownie wchodząc na tą stronę.</p>
-		<?php
+		}	
 	} else {
 	?>
-	<p class="suds_text">Witaj w systemie moderacji SUDS! Wybierz działanie z menu, znajdującego się na górze strony. Kiedy skończysz pracę, wyloguj się.</p>
+	<p class="suds_text">Witaj w systemie moderacji SUDS! Wybierz działanie z menu, znajdującego się na górze strony.</p>
 	<?php
-	}
-	} else {
-	?>
-	<p class="suds_modlogin_text">Podaj hasło moderatora:</p><br />
-	<form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
-		<input type="password" name="modlogin_pass" /><br />
-		<input type="hidden" name="modlogin" value="1" />
-		<input type="submit" value="Zaloguj" />
-	</form>
-<?php
 	}
 } else {
 ?>
@@ -251,7 +236,9 @@ if(file_exists("suds_settings.php")) {
 }
 ?>
 <br />
-<a class="suds_main_link" href="suds.php" title="Indeks systemu SUDS">Indeks systemu SUDS</a><hr />
-<p class="suds_footer">Powered by SUDS</a> | &copy; 2010 by Phitherek_</p>
+<a class="suds_main_link" href="suds.php" title="Indeks systemu SUDS">Indeks systemu SUDS</a><br />
+<a class="suds_slmadmin" href="slm_admin.php">Administracja SLM</a><hr />
+<p class="suds_footer">Powered by SUDS</a> | &copy; 2010 by Phitherek_<br />
+MOD: SLMlock | &copy; 2010 by Phitherek_ | uses SLM &copy; 2010 by Phitherek_ </p>
 </body>
 </html>
