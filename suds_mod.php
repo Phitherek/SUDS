@@ -107,7 +107,9 @@ if(file_exists("suds_settings.php")) {
 		?>
 		<p class="suds_error">Nie udało się dodać pliku do bazy danych! Usuwam plik...</p><br />
 		<?php
-		unlink("suds_files/".$_FILES['upfile']['name']);
+		chdir("suds_files");
+		unlink($_FILES['upfile']['name']);
+		chdir("..");
 		}
 			} else {
 			?>
@@ -190,11 +192,12 @@ if(file_exists("suds_settings.php")) {
 		$dball=mysql_query("SELECT * FROM ".$prefix."files_main");
 		$rows=mysql_num_rows($dball);
 		$all=mysql_fetch_array($dball);
-		$delname=$all['name'];
+		$delname=$all['filename'];
 		$query=mysql_query("DELETE FROM ".$prefix."files_main WHERE id=".$id);
 		if($query == 1) {
-			$delete="suds_files/".$delname;
-		unlink($delete);
+		chdir("suds_files");
+		unlink($delname);
+		chdir("..");
 		?>
 		<p class=suds_info>Plik został pomyślnie usunięty!</p><br />
 		<?php
