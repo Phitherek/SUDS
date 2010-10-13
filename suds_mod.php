@@ -97,6 +97,11 @@ if(file_exists("suds_settings.php")) {
 		<p class="suds_error">Nie udało się ustawić poprawnej wartości AUTO_INCREMENT!</p>
 		<?php
 		} else {
+			if(file_exists("suds_files/".$_FILES['upfile']['name'])) {
+			?>
+			<p class="suds_error">Błąd: Plik o takiej nazwie już istnieje! Zmień nazwę pliku lub usuń istniejący.</p>
+			<?php
+			} else {
 			if(move_uploaded_file($_FILES['upfile']['tmp_name'],"./suds_files/".$_FILES['upfile']['name'])) {
 		$query=mysql_query("INSERT INTO ".$prefix."files_main VALUES (NULL,".'"'.$_FILES['upfile']['name'].'"'.",".'"'.$_POST['updesc'].'"'.",NULL)");
 		if($query == 1) {
@@ -124,6 +129,7 @@ if(file_exists("suds_settings.php")) {
 			</p><br />
 			<?php
 			}
+		}
 		}
 		} else {
 		?>
