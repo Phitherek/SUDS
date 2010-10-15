@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Phitherek_' s SUDS - Instalacja</title>
+<title>Phitherek_' s SUDS - MOD: Categories - Instalacja</title>
 <META http-equiv="content-type" content="text/html; charset=utf-8" />
 </head>
 <body>
@@ -80,7 +80,7 @@ Adres serwera MySQL: <input type="text" name="serek" value="<?php echo $_POST['s
 Nazwa użytkownika MySQL: <input type="text" name="dbuser" value="<?php echo $_POST['dbuser']; ?>" /><br />
 Hasło MySQL: <input type="password" name="dbpass" /><br />
 Nazwa bazy danych: <input type="text" name="dbname" value="<?php echo $_POST['dbname']; ?>" /><br />
-Prefiks tabeli: <input type="text" name="prefix" value="suds_" /><br />
+Prefiks tabel: <input type="text" name="prefix" value="suds_" /><br />
 Hasło moderatora: <input type="password" name="modpass" /><br />
 Powtórz hasło moderatora: <input type="password" name="modcheck" /><br />
 <input type="hidden" name="go" value="4" />
@@ -95,7 +95,7 @@ Adres serwera MySQL: <input type="text" name="serek" value="localhost" /><br />
 Nazwa użytkownika MySQL: <input type="text" name="dbuser" value="root" /><br />
 Hasło MySQL: <input type="password" name="dbpass" /><br />
 Nazwa bazy danych: <input type="text" name="dbname" value="suds" /><br />
-Prefiks tabeli: <input type="text" name="prefix" value="suds_" /><br />
+Prefiks tabel: <input type="text" name="prefix" value="suds_" /><br />
 Hasło moderatora: <input type="password" name="modpass" /><br />
 Powtórz hasło moderatora: <input type="password" name="modcheck" /><br />
 <input type="hidden" name="go" value="4" />
@@ -110,12 +110,25 @@ $baza=mysql_connect($_POST['serek'],$_POST['dbuser'],$_POST['dbpass'])
 or die("Połączenie z serwerem MySQL nieudane!");
 echo("Połączono z serwerem MySQL!<br />");
 mysql_select_db($_POST['dbname']);
-$zapytanie=mysql_query("CREATE TABLE `".$_POST['prefix']."files_main` (`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, `filename` VARCHAR(70), `desc` VARCHAR(100), `added` TIMESTAMP)");
+$zapytanie=mysql_query("CREATE TABLE `".$_POST['prefix']."files_main` (`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, `filename` VARCHAR(70), `desc` VARCHAR(100), `category` INT, `added` TIMESTAMP)");
 if($zapytanie == 1) {
-echo("Tabela została utworzona poprawnie!<br />");
+echo("Tabela dla plików została utworzona poprawnie!<br />");
+$zapytaniea=mysql_query("CREATE TABLE `".$_POST['prefix']."files_categories` (`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, `category` VARCHAR(100))");
+if($zapytaniea == 1) {
+echo("Tabela dla kategorii została utworzona poprawnie!<br />");
 } else {
 ?>
-Błąd! Tabela nie została utworzona! Ustawienia nie zostaną zapisane!<br />
+Błąd! Tabela dla kategorii nie została utworzona! Ustawienia nie zostaną zapisane!<br />
+<form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
+<input type="hidden" name="go" value="3" />
+<input type="submit" value="Powrót" />
+</form>
+<?php
+$fail=1;
+}
+} else {
+?>
+Błąd! Tabela dla plików nie została utworzona! Ustawienia nie zostaną zapisane!<br />
 <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
 <input type="hidden" name="go" value="3" />
 <input type="submit" value="Powrót" />

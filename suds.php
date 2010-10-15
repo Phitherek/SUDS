@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Phitherek_' s SUDS - Główny plik systemu - ten tytuł można później zmienić</title>
+<title>Phitherek_' s SUDS - MOD: Categories - Główny plik systemu - ten tytuł można później zmienić</title>
 <META http-equiv="content-type" content="text/html; charset=utf-8" />
 <!-- Tutaj ewentualnie dołączyć plik stylu CSS -->
 </head>
@@ -13,6 +13,12 @@ if(file_exists("suds_settings.php")) {
 	$dball=mysql_query("SELECT * FROM ".$prefix."files_main");
 	$rows=mysql_num_rows($dball);
 	if($rows != NULL) {
+		$catall=mysql_query("SELECT * FROM ".$prefix."files_categories");
+		$catrows=mysql_num_rows($dball);
+		if($catrows == NULL) {
+			?>
+			<h3 class="suds_category">Bez kategorii:</h3><hr />
+			<?php
 		for($id = 1; $id <= $rows; $id++) {
 			$query=mysql_query("SELECT filename FROM ".$prefix."files_main WHERE id=".$id);
 			$filename=mysql_fetch_array($query);
@@ -43,6 +49,77 @@ if(file_exists("suds_settings.php")) {
 		<p class="suds_date">Ostatnia modyfikacja pliku: <?php echo $added['added']; ?></p><br /><br />
 		<?php
 		}
+		} else {
+			for($catid = 0; $catid <= $catrows; $catid++) {
+				if($catid == 0) {
+				?>
+			<h3 class="suds_category">Bez kategorii:</h3><hr />
+			<?php
+			$query=mysql_query("SELECT filename,desc,added FROM ".$prefix."files_main WHERE category=0");
+			while($row = mysql_fetch_array($query)) {
+		if($row['filename'] != NULL) {
+		if($row['desc'] != NULL) {
+		?>
+		<a class = "suds_link_ok" href="suds_files/<?php echo $row['filename']; ?>"><?php echo $row['desc']; ?></a><br />
+		<?php
+		} else {
+		?>
+		<a class = "suds_link_nodesc" href="suds_files/<?php echo $row['filename']; ?>"><?php echo $row['filename']; ?></a><br />
+		<?php
+		}
+		} else if($row['desc'] != NULL) {
+		?>
+		<p class="suds_desconly"><?php echo $row['desc']; ?> (Brak odnośnika!)</p><br />
+		<?php
+		} else {
+		?>
+		<p class="suds_broken">Zły wpis (brak odnośnika i opisu)!</p><br />
+		<?php
+		}
+		?>
+		<p class="suds_date">Ostatnia modyfikacja pliku: <?php echo $row['added']; ?></p><br /><br />
+		<?php
+			}
+			?>
+			<hr />
+			<?php
+				} else {
+				$query=mysql_query("SELECT category FROM ".$prefix."files_categories WHERE id=".$catid);
+				$category=mysql_fetch_array($query);
+				?>
+				<h3 class="suds_category">Kategoria: <?php echo $category['category']; ?></h3><hr />
+				<?php
+				$query=mysql_query("SELECT filename,desc,added FROM ".$prefix."files_main WHERE category=".$catid);
+			while($row = mysql_fetch_array($query)) {
+		if($row['filename'] != NULL) {
+		if($row['desc'] != NULL) {
+		?>
+		<a class = "suds_link_ok" href="suds_files/<?php echo $row['filename']; ?>"><?php echo $row['desc']; ?></a><br />
+		<?php
+		} else {
+		?>
+		<a class = "suds_link_nodesc" href="suds_files/<?php echo $row['filename']; ?>"><?php echo $row['filename']; ?></a><br />
+		<?php
+		}
+		} else if($row['desc'] != NULL) {
+		?>
+		<p class="suds_desconly"><?php echo $row['desc']; ?> (Brak odnośnika!)</p><br />
+		<?php
+		} else {
+		?>
+		<p class="suds_broken">Zły wpis (brak odnośnika i opisu)!</p><br />
+		<?php
+		}
+		?>
+		<p class="suds_date">Ostatnia modyfikacja pliku: <?php echo $row['added']; ?></p><br /><br />
+		<?php
+				}
+				?>
+				<hr />
+				<?php
+			}
+		}
+		}
 	} else {
 	?>
 <p class="suds_info">Brak rekordów w bazie danych</p>
@@ -57,6 +134,7 @@ if(file_exists("suds_settings.php")) {
 ?>
 <a class="suds_admin" href="suds_mod.php" title="Moderacja">Moderacja</a><br />
 <hr />
-<p class="suds_footer">Powered by SUDS | &copy; 2010 by Phitherek_</p>
+<p class="suds_footer">Powered by SUDS | &copy; 2010 by Phitherek_<br />
+MOD: Categories | &copy; 2010 by Phitherek_</p>
 </body>
 </html>
