@@ -91,7 +91,7 @@ if(file_exists("suds_settings.php")) {
 				?>
 			<h3 class="suds_category">Bez kategorii:</h3><hr />
 			<?php
-			$query=mysql_query("SELECT `filename`,`desc`,`added` FROM ".$prefix."files_main WHERE `category`=0");
+			$query=mysql_query("SELECT `id`,`filename`,`desc`,`added` FROM ".$prefix."files_main WHERE `category`=0");
 			while($row = mysql_fetch_array($query)) {
 		if($row['filename'] != NULL) {
 		if($row['desc'] != NULL) {
@@ -134,7 +134,7 @@ if(file_exists("suds_settings.php")) {
 				?>
 				<h3 class="suds_category">Kategoria: <?php echo $category['category']; ?></h3><hr />
 				<?php
-				$query=mysql_query("SELECT `filename`,`desc`,`added` FROM ".$prefix."files_main WHERE `category`=".$catid);
+				$query=mysql_query("SELECT `id`,`filename`,`desc`,`added` FROM ".$prefix."files_main WHERE `category`=".$catid);
 			while($row = mysql_fetch_array($query)) {
 		if($row['filename'] != NULL) {
 		if($row['desc'] != NULL) {
