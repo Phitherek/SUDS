@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Phitherek_' s SUDS - System moderacji - tytuł może być później zmieniony</title>
+<title>Phitherek_' s SUDS - MOD: Locked - System moderacji - tytuł może być później zmieniony</title>
 <META http-equiv="content-type" content="text/html; charset=utf-8" />
 <!-- Tutaj ewentualnie dołączyć plik stylu CSS -->
 </head>
@@ -252,6 +252,7 @@ if(file_exists("suds_settings.php")) {
 ?>
 <br />
 <a class="suds_main_link" href="suds.php" title="Indeks systemu SUDS">Indeks systemu SUDS</a><hr />
-<p class="suds_footer">Powered by SUDS</a> | &copy; 2010 by Phitherek_</p>
+<p class="suds_footer">Powered by SUDS</a> | &copy; 2010 by Phitherek_<br />
+MOD: Locked | &copy; 2010 by Phitherek_</p>
 </body>
 </html>

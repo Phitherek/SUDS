@@ -1,13 +1,29 @@
 <html>
 <head>
-<title>Phitherek_' s SUDS - Główny plik systemu - ten tytuł można później zmienić</title>
+<title>Phitherek_' s SUDS - MOD: Locked - Główny plik systemu - ten tytuł można później zmienić</title>
 <META http-equiv="content-type" content="text/html; charset=utf-8" />
 <!-- Tutaj ewentualnie dołączyć plik stylu CSS -->
 </head>
 <body>
 <?php
+session_start();
+if (!isset($_SESSION['started'])) {
+session_regenerate_id();
+$_SESSION['started'] = true;
+}
 if(file_exists("suds_settings.php")) {
 	include("suds_settings.php");
+	if($_SESSION['suds_unlocked'] == 1) {
+		if($_GET['action'] == "lock") {
+		$_SESSION['suds_unlocked'] = 0;
+		?>
+		<p class="suds_info">Dostęp został ponownie zablokowany.</p><br /><br />
+		<?php
+		session_regenerate_id();
+		}
+		?>
+		<a class="suds_locklink" href="<?php echo $_SERVER["PHP_SELF"]; ?>?action=lock">Wyloguj</a><br /><br />
+		<?php
 	$baza=mysql_connect($serek, $dbuser, $dbpass) or die("Nie można się połączyć z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
 	mysql_select_db($dbname);
 	$dball=mysql_query("SELECT * FROM ".$prefix."files_main");
@@ -49,6 +65,22 @@ if(file_exists("suds_settings.php")) {
 <?php
 	}
 	mysql_close($baza);
+	} else {
+		if($_POST['unlock'] == 1) {
+			if($_POST['unlockpass'] == $unlockpass) {
+			$_SESSION['suds_unlocked'] = 1;
+			session_regenerate_id();
+			}
+		}
+	?>
+	<p class="suds_login_text">Podaj hasło dostępu:</p><br />
+	<form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
+	<input type="password" name="unlockpass" />
+	<input type="hidden" name="unlock" value=1 />
+	<input type="submit" value="Odblokuj">
+	</form>
+	<?php	
+	}
 } else {
 ?>
 <p class="suds_error">Plik ustawień nie istnieje! Czy na pewno uruchomiłeś install.php?</p>
@@ -57,6 +89,7 @@ if(file_exists("suds_settings.php")) {
 ?>
 <a class="suds_admin" href="suds_mod.php" title="Moderacja">Moderacja</a><br />
 <hr />
-<p class="suds_footer">Powered by SUDS | &copy; 2010 by Phitherek_</p>
+<p class="suds_footer">Powered by SUDS | &copy; 2010 by Phitherek_<br />
+MOD: Locked | &copy; 2010 by Phitherek_</p>
 </body>
 </html>

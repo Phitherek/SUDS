@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Phitherek_' s SUDS - Instalacja</title>
+<title>Phitherek_' s SUDS - MOD: Locked - Instalacja</title>
 <META http-equiv="content-type" content="text/html; charset=utf-8" />
 </head>
 <body>
@@ -25,6 +25,15 @@ echo("Hasło moderatora nie zgadza się z powtórzonym hasłem moderatora!");
 } else {
 $step = 3;
 echo("Nie wpisałeś hasła moderatora!");
+}
+if($_POST['unlockpass']!=NULL) {	
+if($_POST['unlockpass'] != $_POST['unlockcheck']) {
+$step = 3;
+echo("Hasło dostępu nie zgadza się z powtórzonym hasłem dostępu!");
+}
+} else {
+$step = 3;
+echo("Nie wpisałeś hasła dostępu!");
 }
 }
 if($step == 1) {
@@ -83,6 +92,8 @@ Nazwa bazy danych: <input type="text" name="dbname" value="<?php echo $_POST['db
 Prefiks tabeli: <input type="text" name="prefix" value="suds_" /><br />
 Hasło moderatora: <input type="password" name="modpass" /><br />
 Powtórz hasło moderatora: <input type="password" name="modcheck" /><br />
+Hasło dostępu: <input type="password" name="unlockpass" /><br />
+Powtórz hasło dostępu: <input type="password" name="unlockcheck" /><br />
 <input type="hidden" name="go" value="4" />
 <input type="submit" value="Wykonaj i zapisz" />
 </form>
@@ -98,6 +109,8 @@ Nazwa bazy danych: <input type="text" name="dbname" value="suds" /><br />
 Prefiks tabeli: <input type="text" name="prefix" value="suds_" /><br />
 Hasło moderatora: <input type="password" name="modpass" /><br />
 Powtórz hasło moderatora: <input type="password" name="modcheck" /><br />
+Hasło dostępu: <input type="password" name="unlockpass" /><br />
+Powtórz hasło dostępu: <input type="password" name="unlockcheck" /><br />
 <input type="hidden" name="go" value="4" />
 <input type="submit" value="Wykonaj i zapisz" />
 </form>
@@ -135,6 +148,7 @@ fputs($ustawienia,'$dbpass="'.$_POST['dbpass'].'"'.";\n");
 fputs($ustawienia,'$dbname="'.$_POST['dbname'].'"'.";\n");
 fputs($ustawienia,'$prefix="'.$_POST['prefix'].'"'.";\n");
 fputs($ustawienia,'$modpass="'.$_POST['modpass'].'"'.";\n");
+fputs($ustawienia,'$unlockpass="'.$_POST['unlockpass'].'"'.";\n");
 fputs($ustawienia,'?>');
 flock($ustawienia,LOCK_UN);
 fclose($ustawienia);
