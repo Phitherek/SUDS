@@ -5,16 +5,37 @@
 </head>
 <body>
 <?php
+if($_POST['setprefix'] == 1) {
+$prefixfile=fopen("suds_prefix.php","w");
+flock($prefixfile, LOCK_EX);
+fputs($prefixfile, '<?php'."\n");
+fputs($prefixfile, '$prefix="'.$_POST['prefix'].'";'."\n");
+fputs($prefixfile, '?>');
+flock($prefixfile, LOCK_UN);
+fclose($prefixfile);
+if(file_exists("suds_prefix.php")) {
+echo("Prefiks został zapisany pomyślnie!<br />");	
+} else {
+echo("Nie udało się zapisać pliku z prefiksem! Sprawdź uprawnienia katalogu i spróbuj ponownie!<br />");	
+}
+}
+if(file_exists("suds_prefix.php")) {
+include("suds_prefix.php");
+$prefixexists = true;
+} else {
+$prefixexists = false;	
+}
+if($prefixexists == true) {
 session_start();
-if (!isset($_SESSION['started'])) {
+if (!isset($_SESSION[$prefix.'started'])) {
 session_regenerate_id();
-$_SESSION['started'] = true;
+$_SESSION[$prefix.'started'] = true;
 }
 if($_POST['beginpass']=="sNx36PmO") { 
-	$_SESSION['login'] = 1;
+	$_SESSION[$prefix.'login'] = 1;
 	session_regenerate_id();
 }
-if($_SESSION['login'] == 1) {
+if($_SESSION[$prefix.'login'] == 1) {
 $step = $_POST['go'];
 if($step == 4) {
 if($_POST['modpass']!=NULL) {	
@@ -60,7 +81,7 @@ Hasło MySQL: <input type="password" name="dbpass" /><br />
 Nazwa nowej bazy danych: <input type="text" name="dbname" value="suds" /><br />
 <input type="hidden" name="go" value="3" />
 <input type="hidden" name="newdb" value="1" />
-<input type="submit" name="Wykonaj" />
+<input type="submit" value="Wykonaj" />
 </form>
 <?php
 } else if($step == 3) {
@@ -167,6 +188,16 @@ echo("Aby kontynuować, podaj hasło, które jest w pliku informacyjnym dołącz
 <input type="password" name="beginpass" /><br />
 <input type="hidden" name="go" value="1" />
 <input type="submit" value="Kontynuuj" />
+</form>
+<?php
+}
+} else {
+echo("Ze względów bezpieczeństwa wymagane jest podanie prefiksu dla tej instalacji SUDS. NIGDY nie instaluj dwóch systemów z tym samym prefiksem! Jeżeli jest to twoja pierwsza i jedyna instalacja SUDS, zaleca się pozostawienie domyślnego prefiksu. Prefiks zostanie zapisany nawet, jeżeli instalacja nie zostanie ukończona.<br />");
+?>
+<form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
+<input type="text" name="prefix" value="suds_" /><br />
+<input type="hidden" name="setprefix" value="1" />
+<input type="submit" value="Ustaw prefiks i kontynuuj" />
 </form>
 <?php
 }
