@@ -13,14 +13,29 @@ $_SESSION['started'] = true;
 }
 if(file_exists("suds_settings.php")) {
 	include("suds_settings.php");
-	if($_SESSION['suds_unlocked'] == 1) {
-		if($_GET['action'] == "lock") {
+	if($_GET['action'] == "lock") {
 		$_SESSION['suds_unlocked'] = 0;
 		?>
 		<p class="suds_info">Dostęp został ponownie zablokowany.</p><br /><br />
 		<?php
 		session_regenerate_id();
+	}
+			if($_POST['unlock'] == 1) {
+			if($_POST['unlockpass'] == $unlockpass) {
+			$_SESSION['suds_unlocked'] = 1;
+			session_regenerate_id();
+			}
 		}
+		if($_SESSION['suds_unlocked'] == 0) {
+	?>
+	<p class="suds_login_text">Podaj hasło dostępu:</p><br />
+	<form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
+	<input type="password" name="unlockpass" />
+	<input type="hidden" name="unlock" value=1 />
+	<input type="submit" value="Odblokuj">
+	</form>
+	<?php	
+	} else {
 		?>
 		<a class="suds_locklink" href="<?php echo $_SERVER["PHP_SELF"]; ?>?action=lock">Wyloguj</a><br /><br />
 		<?php
@@ -64,23 +79,8 @@ if(file_exists("suds_settings.php")) {
 <p class="suds_info">Brak rekordów w bazie danych</p>
 <?php
 	}
-	mysql_close($baza);
-	} else {
-		if($_POST['unlock'] == 1) {
-			if($_POST['unlockpass'] == $unlockpass) {
-			$_SESSION['suds_unlocked'] = 1;
-			session_regenerate_id();
-			}
-		}
-	?>
-	<p class="suds_login_text">Podaj hasło dostępu:</p><br />
-	<form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
-	<input type="password" name="unlockpass" />
-	<input type="hidden" name="unlock" value=1 />
-	<input type="submit" value="Odblokuj">
-	</form>
-	<?php	
 	}
+	mysql_close($baza);
 } else {
 ?>
 <p class="suds_error">Plik ustawień nie istnieje! Czy na pewno uruchomiłeś install.php?</p>
@@ -90,6 +90,6 @@ if(file_exists("suds_settings.php")) {
 <a class="suds_admin" href="suds_mod.php" title="Moderacja">Moderacja</a><br />
 <hr />
 <p class="suds_footer">Powered by SUDS | &copy; 2010 by Phitherek_<br />
-MOD: Locked | &copy; 2010 by Phitherek_</p>
+MOD: Locked | &copy; 2010-2011 by Phitherek_</p>
 </body>
 </html>

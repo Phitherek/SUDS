@@ -253,6 +253,6 @@ if(file_exists("suds_settings.php")) {
 <br />
 <a class="suds_main_link" href="suds.php" title="Indeks systemu SUDS">Indeks systemu SUDS</a><hr />
 <p class="suds_footer">Powered by SUDS</a> | &copy; 2010 by Phitherek_<br />
-MOD: Locked | &copy; 2010 by Phitherek_</p>
+MOD: Locked | &copy; 2010-2011 by Phitherek_</p>
 </body>
 </html>
