@@ -28,14 +28,14 @@ $prefixexists = false;
 }
 if($prefixexists == true) {
 session_start();
-if (!isset($_SESSION['started'])) {
+if (!isset($_SESSION[$prefix.'started'])) {
 session_regenerate_id();
-$_SESSION['started'] = true;
+$_SESSION[$prefix.'started'] = true;
 }
 if(file_exists("suds_settings.php")) {
 	include("suds_settings.php");
 	if($_GET['action'] == "lock") {
-		$_SESSION['suds_unlocked'] = 0;
+		$_SESSION[$prefix.'suds_unlocked'] = 0;
 		?>
 		<p class="suds_info">Dostęp został ponownie zablokowany.</p><br /><br />
 		<?php
@@ -43,11 +43,11 @@ if(file_exists("suds_settings.php")) {
 	}
 			if($_POST['unlock'] == 1) {
 			if($_POST['unlockpass'] == $unlockpass) {
-			$_SESSION['suds_unlocked'] = 1;
+			$_SESSION[$prefix.'suds_unlocked'] = 1;
 			session_regenerate_id();
 			}
 		}
-		if($_SESSION['suds_unlocked'] == 0) {
+		if($_SESSION[$prefix.'suds_unlocked'] == 0) {
 	?>
 	<p class="suds_login_text">Podaj hasło dostępu:</p><br />
 	<form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
