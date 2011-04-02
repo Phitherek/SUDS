@@ -67,11 +67,11 @@ if(file_exists("suds_settings.php")) {
 		if($filename != NULL) {
 		if($desc != NULL) {
 		?>
-		<a class = "suds_link_ok" href="suds_files/<?php echo $filename['filename']; ?>"><?php echo $desc['desc']; ?></a><br />
+		<a class = "suds_link_ok" href="suds_files/<?php echo rawurlencode($filename['filename']); ?>"><?php echo $desc['desc']; ?></a><br />
 		<?php
 		} else {
 		?>
-		<a class = "suds_link_nodesc" href="suds_files/<?php echo $filename['filename']; ?>"><?php echo $filename['filename']; ?></a><br />
+		<a class = "suds_link_nodesc" href="suds_files/<?php echo rawurlencode($filename['filename']); ?>"><?php echo $filename['filename']; ?></a><br />
 		<?php
 		}
 		} else if($desc != NULL) {
