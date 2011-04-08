@@ -56,13 +56,13 @@ if(file_exists("suds_settings.php")) {
 	if($_GET['action'] == "show") {
 		$baza=mysql_connect($serek, $dbuser, $dbpass) or die("Nie można się połączyć z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
 	mysql_select_db($dbname);
-	$dball=mysql_query("SELECT * FROM ".$prefix."files_main");
+	$dball=mysql_query("SELECT * FROM ".$dbprefix."files_main");
 	$rows=mysql_num_rows($dball);
 	if($rows != NULL) {
 		for($id = 1; $id <= $rows; $id++) {
-			$query=mysql_query("SELECT filename FROM ".$prefix."files_main WHERE id=".$id);
+			$query=mysql_query("SELECT filename FROM ".$dbprefix."files_main WHERE id=".$id);
 			$filename=mysql_fetch_array($query);
-		$query=mysql_query("SELECT `desc` FROM ".$prefix."files_main WHERE id=".$id);
+		$query=mysql_query("SELECT `desc` FROM ".$dbprefix."files_main WHERE id=".$id);
 		$desc=mysql_fetch_array($query);
 		if($filename != NULL) {
 		if($desc != NULL) {
@@ -83,7 +83,7 @@ if(file_exists("suds_settings.php")) {
 		<p class="suds_broken">Zły wpis (brak odnośnika i opisu)!</p><br />
 		<?php
 		}
-		$query=mysql_query("SELECT added FROM ".$prefix."files_main WHERE id=".$id);
+		$query=mysql_query("SELECT added FROM ".$dbprefix."files_main WHERE id=".$id);
 		$added=mysql_fetch_array($query);
 		?>
 		<p class="suds_date">Ostatnia modyfikacja pliku: <?php echo $added['added']; ?></p><br /><br />
@@ -109,10 +109,10 @@ if(file_exists("suds_settings.php")) {
 		if(isset($_FILES['upfile'])) {
 		$baza=mysql_connect($serek,$dbuser,$dbpass) or die("Nie można się połączyć z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
 		mysql_select_db($dbname);
-		$dball=mysql_query("SELECT * FROM ".$prefix."files_main");
+		$dball=mysql_query("SELECT * FROM ".$dbprefix."files_main");
 		$numrows=mysql_num_rows($dball);
 		$ai=$numrows+1;
-		$query=mysql_query("ALTER TABLE ".$prefix."files_main AUTO_INCREMENT = ".$ai);
+		$query=mysql_query("ALTER TABLE ".$dbprefix."files_main AUTO_INCREMENT = ".$ai);
 		if($query != 1) {
 		?>
 		<p class="suds_error">Nie udało się ustawić poprawnej wartości AUTO_INCREMENT!</p>
@@ -124,7 +124,7 @@ if(file_exists("suds_settings.php")) {
 			<?php
 			} else {
 			if(move_uploaded_file($_FILES['upfile']['tmp_name'],"./suds_files/".$_FILES['upfile']['name'])) {
-		$query=mysql_query("INSERT INTO ".$prefix."files_main VALUES (NULL,".'"'.$_FILES['upfile']['name'].'"'.",".'"'.$_POST['updesc'].'"'.",NULL)");
+		$query=mysql_query("INSERT INTO ".$dbprefix."files_main VALUES (NULL,".'"'.$_FILES['upfile']['name'].'"'.",".'"'.$_POST['updesc'].'"'.",NULL)");
 		if($query == 1) {
 		?>
 		<p class="suds_info">Plik został przesłany!</p><br />
@@ -174,7 +174,7 @@ if(file_exists("suds_settings.php")) {
 		if($_POST['edset'] == 1) {
 		$baza=mysql_connect($serek,$dbuser,$dbpass) or die("Nie można połączyć się z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
 		mysql_select_db($dbname);
-		$query=mysql_query("UPDATE ".$prefix."files_main SET `desc`=".'"'.$_POST['desc'].'"'." WHERE id=".$_POST['id']);
+		$query=mysql_query("UPDATE ".$dbprefix."files_main SET `desc`=".'"'.$_POST['desc'].'"'." WHERE id=".$_POST['id']);
 		if($query == 1) {
 		?>
 		<p class="suds_info">Opis pliku zaktualizowany pomyślnie!</p><br />
@@ -189,7 +189,7 @@ if(file_exists("suds_settings.php")) {
 		mysql_select_db($dbname);
 		$id = $_POST['id'];
 		if($id != NULL) {
-		$query=mysql_query("SELECT `desc` FROM ".$prefix."files_main WHERE id=".$id);
+		$query=mysql_query("SELECT `desc` FROM ".$dbprefix."files_main WHERE id=".$id);
 		$desc=mysql_fetch_array($query);
 		?>
 		<h3 class="suds_title">Modyfikacja opisu pliku:</h3><br />
@@ -216,11 +216,11 @@ if(file_exists("suds_settings.php")) {
 		if($id != NULL) {
 		$baza=mysql_connect($serek,$dbuser,$dbpass) or die("Nie można połączyć się z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
 		mysql_select_db($dbname);
-		$dball=mysql_query("SELECT * FROM ".$prefix."files_main");
+		$dball=mysql_query("SELECT * FROM ".$dbprefix."files_main");
 		$rows=mysql_num_rows($dball);
 		$all=mysql_fetch_array($dball);
 		$delname=$all['filename'];
-		$query=mysql_query("DELETE FROM ".$prefix."files_main WHERE id=".$id);
+		$query=mysql_query("DELETE FROM ".$dbprefix."files_main WHERE id=".$id);
 		if($query == 1) {
 		chdir("suds_files");
 		unlink($delname);
@@ -231,11 +231,11 @@ if(file_exists("suds_settings.php")) {
 			$nid=$id+1;
 			if($nid<=$rows) {
 			for($i=$nid;$i<=$rows;$i++) {
-			$query=mysql_query("SELECT added FROM ".$prefix."files WHERE id=".$i);
+			$query=mysql_query("SELECT added FROM ".$dbprefix."files WHERE id=".$i);
 			$added=mysql_fetch_array($query);
 			$sid=$i-1;
-			$query=mysql_query("UPDATE ".$prefix."files_main SET id=".$sid." WHERE id=".$i);
-			$query=mysql_query("UPDATE ".$prefix."files_main SET added=".$added['added']." WHERE id=".$sid);
+			$query=mysql_query("UPDATE ".$dbprefix."files_main SET id=".$sid." WHERE id=".$i);
+			$query=mysql_query("UPDATE ".$dbprefix."files_main SET added=".$added['added']." WHERE id=".$sid);
 			}
 			mysql_close($baza);
 			}
