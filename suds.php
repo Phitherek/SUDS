@@ -62,13 +62,13 @@ if(file_exists("suds_settings.php")) {
 		<?php
 	$baza=mysql_connect($serek, $dbuser, $dbpass) or die("Nie można się połączyć z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
 	mysql_select_db($dbname);
-	$dball=mysql_query("SELECT * FROM ".$prefix."files_main");
+	$dball=mysql_query("SELECT * FROM ".$dbprefix."files_main");
 	$rows=mysql_num_rows($dball);
 	if($rows != NULL) {
 		for($id = 1; $id <= $rows; $id++) {
-			$query=mysql_query("SELECT filename FROM ".$prefix."files_main WHERE id=".$id);
+			$query=mysql_query("SELECT filename FROM ".$dbprefix."files_main WHERE id=".$id);
 			$filename=mysql_fetch_array($query);
-		$query=mysql_query("SELECT `desc` FROM ".$prefix."files_main WHERE id=".$id);
+		$query=mysql_query("SELECT `desc` FROM ".$dbprefix."files_main WHERE id=".$id);
 		$desc=mysql_fetch_array($query);
 		if($filename != NULL) {
 		if($desc != NULL) {
@@ -89,7 +89,7 @@ if(file_exists("suds_settings.php")) {
 		<p class="suds_broken">Zły wpis (brak odnośnika i opisu)!</p><br />
 		<?php
 		}
-		$query=mysql_query("SELECT added FROM ".$prefix."files_main WHERE id=".$id);
+		$query=mysql_query("SELECT added FROM ".$dbprefix."files_main WHERE id=".$id);
 		$added=mysql_fetch_array($query);
 		?>
 		<p class="suds_date">Ostatnia modyfikacja pliku: <?php echo $added['added']; ?></p><br /><br />
