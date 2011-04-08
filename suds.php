@@ -10,7 +10,7 @@ if(file_exists("suds_settings.php")) {
 	include("suds_settings.php");
 	$baza=mysql_connect($serek, $dbuser, $dbpass) or die("Nie można się połączyć z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
 	mysql_select_db($dbname);
-	$dball=mysql_query("SELECT * FROM ".$prefix."files_main");
+	$dball=mysql_query("SELECT * FROM ".$dbprefix."files_main");
 	$rows=mysql_num_rows($dball);
 	if($rows != NULL) {
 		for($id = 1; $id <= $rows; $id++) {
