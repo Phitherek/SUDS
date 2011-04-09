@@ -64,8 +64,8 @@ if(file_exists("suds_settings.php")) {
 			$filename=mysql_fetch_array($query);
 		$query=mysql_query("SELECT `desc` FROM ".$dbprefix."files_main WHERE id=".$id);
 		$desc=mysql_fetch_array($query);
-		if($filename != NULL) {
-		if($desc != NULL) {
+		if($filename['filename'] != NULL) {
+		if($desc['desc'] != NULL) {
 		?>
 		<a class = "suds_link_ok" href="suds_files/<?php echo rawurlencode($filename['filename']); ?>"><?php echo $desc['desc']; ?></a><br />
 		<?php
@@ -74,7 +74,7 @@ if(file_exists("suds_settings.php")) {
 		<a class = "suds_link_nodesc" href="suds_files/<?php echo rawurlencode($filename['filename']); ?>"><?php echo $filename['filename']; ?></a><br />
 		<?php
 		}
-		} else if($desc != NULL) {
+		} else if($desc['desc'] != NULL) {
 		?>
 		<p class="suds_desconly"><?php echo $desc['desc']; ?> (Brak odnośnika!)</p><br />
 		<?php
