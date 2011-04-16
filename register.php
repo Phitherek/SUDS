@@ -10,7 +10,7 @@ include("slm_include/footer.php");
 include("slm_include/adminonly.php");
 slm_adminonly("suds.php","suds.php","Indeks systemu SUDS");
 slm_register(1,"suds_mod.php");
-slm_footer("suds_mod.php","Administracja SUDS");
+slm_footer("suds_mod.php","Moderacja SUDS");
 ?>
 </body>
 </html>

@@ -1,12 +1,17 @@
 <?php
 function slm_loginpage_main($banmode=1,$register=1,$registerpage="register.php",$redirect="index.php")
 {
+	global $prefixexists;
+	if(!$prefixexists) {
+include("slm_include/prefixinclude.php");
+prefixinclude("../suds_prefix.php");
+	}
 session_start();
-if (!isset($_SESSION['started'])) {
+if (!isset($_SESSION[$prefix.'started'])) {
 	session_regenerate_id();
-	$_SESSION['started'] = true;
+	$_SESSION[$prefix.'started'] = true;
 }
-if($_SESSION['slm_loggedin'] == 0) {
+if($_SESSION[$prefix.'slm_loggedin'] == 0) {
 if($_POST['login'] == 1) {
 	$error=4;
 if(file_exists("slm_bans/".$_POST['username'].".php")) {
@@ -32,9 +37,9 @@ if(file_exists("slm_bans/".$_POST['username'].".php")) {
 		if($pass == $_POST['password']) {
 		$error = 0;
 		session_regenerate_id;
-		$_SESSION['slm_loggedin'] = 1;
-		$_SESSION['slm_username'] = $_POST['username'];
-		$_SESSION['slm_type'] = $type;
+		$_SESSION[$prefix.'slm_loggedin'] = 1;
+		$_SESSION[$prefix.'slm_username'] = $_POST['username'];
+		$_SESSION[$prefix.'slm_type'] = $type;
 		} else {
 		$error = 2;	
 		}
@@ -86,12 +91,17 @@ window.location.href = "<?php echo $redirect; ?>";
 }
 function slm_loginpage_sub($banmode=1,$register=1,$registerpage="register.php")
 {
+	global $prefixexists;
+	if(!$prefixexists) {
+	include("slm_include/prefixinclude.php");
+prefixinclude("../suds_prefix.php");
+	}
 session_start();
-if (!isset($_SESSION['started'])) {
+if (!isset($_SESSION[$prefix.'started'])) {
 	session_regenerate_id();
-	$_SESSION['started'] = true;
+	$_SESSION[$prefix.'started'] = true;
 }
-if($_SESSION['slm_loggedin'] == 0) {
+if($_SESSION[$prefix.'slm_loggedin'] == 0) {
 	if($_POST['login'] == 1) {
 	$error=4;
 if(file_exists("slm_bans/".$_POST['username'].".php")) {
@@ -117,9 +127,9 @@ if(file_exists("slm_bans/".$_POST['username'].".php")) {
 		if($pass == $_POST['password']) {
 		$error = 0;
 		session_regenerate_id();
-		$_SESSION['slm_loggedin'] = 1;
-		$_SESSION['slm_username'] = $_POST['username'];
-		$_SESSION['slm_type'] = $type;
+		$_SESSION[$prefix.'slm_loggedin'] = 1;
+		$_SESSION[$prefix.'slm_username'] = $_POST['username'];
+		$_SESSION[$prefix.'slm_type'] = $type;
 		} else {
 		$error = 2;	
 		}

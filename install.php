@@ -5,16 +5,37 @@
 </head>
 <body>
 <?php
+if($_POST['setprefix'] == 1) {
+$prefixfile=fopen("suds_prefix.php","w");
+flock($prefixfile, LOCK_EX);
+fputs($prefixfile, '<?php'."\n");
+fputs($prefixfile, '$prefix="'.$_POST['prefix'].'";'."\n");
+fputs($prefixfile, '?>');
+flock($prefixfile, LOCK_UN);
+fclose($prefixfile);
+if(file_exists("suds_prefix.php")) {
+echo("Prefiks został zapisany pomyślnie!<br />");	
+} else {
+echo("Nie udało się zapisać pliku z prefiksem! Sprawdź uprawnienia katalogu i spróbuj ponownie!<br />");	
+}
+}
+if(file_exists("suds_prefix.php")) {
+include("suds_prefix.php");
+$prefixexists = true;
+} else {
+$prefixexists = false;	
+}
+if($prefixexists == true) {
 session_start();
-if (!isset($_SESSION['started'])) {
+if (!isset($_SESSION[$prefix.'started'])) {
 session_regenerate_id();
-$_SESSION['started'] = true;
+$_SESSION[$prefix.'started'] = true;
 }
 if($_POST['beginpass']=="sNx36PmO") { 
-	$_SESSION['login'] = 1;
+	$_SESSION[$prefix.'login'] = 1;
 	session_regenerate_id();
 }
-if($_SESSION['login'] == 1) {
+if($_SESSION[$prefix.'login'] == 1) {
 $step = $_POST['go'];
 if($step == 1) {
 ?>
@@ -40,7 +61,7 @@ Hasło MySQL: <input type="password" name="dbpass" /><br />
 Nazwa nowej bazy danych: <input type="text" name="dbname" value="suds" /><br />
 <input type="hidden" name="go" value="3" />
 <input type="hidden" name="newdb" value="1" />
-<input type="submit" name="Wykonaj" />
+<input type="submit" value="Wykonaj" />
 </form>
 <?php
 } else if($step == 3) {
@@ -54,7 +75,7 @@ if($zapytanie == 1) {
 echo("Nowa baza danych utworzona poprawnie!<br />");
 } else {
 ?>
-Błąd podczas tworzenia nowej bazy danych!<br />fputs($ustawienia,'$modpass="'.$_POST['modpass'].'"'.";\n");
+Błąd podczas tworzenia nowej bazy danych!<br />
 <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
 <input type="hidden" name="go" value="2" />
 <input type="submit" value="Powrót" />
@@ -69,7 +90,7 @@ Adres serwera MySQL: <input type="text" name="serek" value="<?php echo $_POST['s
 Nazwa użytkownika MySQL: <input type="text" name="dbuser" value="<?php echo $_POST['dbuser']; ?>" /><br />
 Hasło MySQL: <input type="password" name="dbpass" /><br />
 Nazwa bazy danych: <input type="text" name="dbname" value="<?php echo $_POST['dbname']; ?>" /><br />
-Prefiks tabeli: <input type="text" name="prefix" value="suds_" /><br />
+Prefiks tabeli: <input type="text" name="dbprefix" value="suds_" /><br />
 <input type="hidden" name="go" value="4" />
 <input type="submit" value="Wykonaj i zapisz" />
 </form>
@@ -82,7 +103,7 @@ Adres serwera MySQL: <input type="text" name="serek" value="localhost" /><br />
 Nazwa użytkownika MySQL: <input type="text" name="dbuser" value="root" /><br />
 Hasło MySQL: <input type="password" name="dbpass" /><br />
 Nazwa bazy danych: <input type="text" name="dbname" value="suds" /><br />
-Prefiks tabeli: <input type="text" name="prefix" value="suds_" /><br />
+Prefiks tabeli: <input type="text" name="dbprefix" value="suds_" /><br />
 <input type="hidden" name="go" value="4" />
 <input type="submit" value="Wykonaj i zapisz" />
 </form>
@@ -95,7 +116,7 @@ $baza=mysql_connect($_POST['serek'],$_POST['dbuser'],$_POST['dbpass'])
 or die("Połączenie z serwerem MySQL nieudane!");
 echo("Połączono z serwerem MySQL!<br />");
 mysql_select_db($_POST['dbname']);
-$zapytanie=mysql_query("CREATE TABLE `".$_POST['prefix']."files_main` (`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, `filename` VARCHAR(70), `desc` VARCHAR(100), `added` TIMESTAMP)");
+$zapytanie=mysql_query("CREATE TABLE `".$_POST['dbprefix']."files_main` (`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, `filename` VARCHAR(70), `desc` VARCHAR(100), `added` TIMESTAMP)");
 if($zapytanie == 1) {
 echo("Tabela została utworzona poprawnie!<br />");
 } else {
@@ -118,7 +139,7 @@ fputs($ustawienia,'$serek="'.$_POST['serek'].'"'.";\n");
 fputs($ustawienia,'$dbuser="'.$_POST['dbuser'].'"'.";\n");
 fputs($ustawienia,'$dbpass="'.$_POST['dbpass'].'"'.";\n");
 fputs($ustawienia,'$dbname="'.$_POST['dbname'].'"'.";\n");
-fputs($ustawienia,'$prefix="'.$_POST['prefix'].'"'.";\n");
+fputs($ustawienia,'$dbprefix="'.$_POST['dbprefix'].'"'.";\n");
 fputs($ustawienia,'?>');
 flock($ustawienia,LOCK_UN);
 fclose($ustawienia);
@@ -137,6 +158,16 @@ echo("Aby kontynuować, podaj hasło, które jest w pliku informacyjnym dołącz
 <input type="password" name="beginpass" /><br />
 <input type="hidden" name="go" value="1" />
 <input type="submit" value="Kontynuuj" />
+</form>
+<?php
+}
+} else {
+echo("Ze względów bezpieczeństwa wymagane jest podanie prefiksu dla tej instalacji SUDS. NIGDY nie instaluj dwóch systemów z tym samym prefiksem! Jeżeli jest to twoja pierwsza i jedyna instalacja SUDS, zaleca się pozostawienie domyślnego prefiksu. Prefiks zostanie zapisany nawet, jeżeli instalacja nie zostanie ukończona.<br />");
+?>
+<form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
+<input type="text" name="prefix" value="suds_" /><br />
+<input type="hidden" name="setprefix" value="1" />
+<input type="submit" value="Ustaw prefiks i kontynuuj" />
 </form>
 <?php
 }

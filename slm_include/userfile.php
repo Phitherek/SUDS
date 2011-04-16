@@ -2,7 +2,7 @@
 function slm_userfile_read($username) {
 	if(file_exists("slm_users/".$username.".php")) {
 		include("slm_users/".$username.".php");
-		$_SESSION['slm_userfile_type'] = $type;
+		$_SESSION[$prefix.'slm_userfile_type'] = $type;
 		return 0;
 	} else {
 	return 1;	
@@ -10,10 +10,15 @@ function slm_userfile_read($username) {
 }
 
 function slm_userfile_winit($username) {
+	global $prefixexists;
+	if(!$prefixexists) {
+	include("slm_include/prefixinclude.php");
+prefixinclude("../suds_prefix.php");
+	}
 session_start();
-if (!isset($_SESSION['started'])) {
+if (!isset($_SESSION[$prefix.'started'])) {
 	session_regenerate_id();
-	$_SESSION['started'] = true;
+	$_SESSION[$prefix.'started'] = true;
 }
 global $f;
 if(file_exists("slm_users/".$username.".php")) {
@@ -24,7 +29,7 @@ if(file_exists("slm_users/".$username.".php")) {
 		fputs($f, '<?php'."\n");
 		fputs($f, '$pass="'.$pass.'";'."\n");
 		fputs($f, '$type="'.$type.'";'."\n");
-		$_SESSION['slm_userfile_winit'] = 1;
+		$_SESSION[$prefix.'slm_userfile_winit'] = 1;
 		return 0;
 } else {
 return 1;	
@@ -32,13 +37,18 @@ return 1;
 }
 
 function slm_userfile_puts($name, $value) {
+	global $prefixexists;
+	if(!$prefixexists) {
+	include("slm_include/prefixinclude.php");
+prefixinclude("../suds_prefix.php");
+	}
 	session_start();
-if (!isset($_SESSION['started'])) {
+if (!isset($_SESSION[$prefix.'started'])) {
 	session_regenerate_id();
-	$_SESSION['started'] = true;
+	$_SESSION[$prefix.'started'] = true;
 }
 global $f;
-	if($_SESSION['slm_userfile_winit'] == 1) {
+	if($_SESSION[$prefix.'slm_userfile_winit'] == 1) {
 	fputs($f, 'global $'.$name.';'."\n".'$'.$name.'="'.$value.'";'."\n");
 	return 0;	
 	} else {
@@ -47,17 +57,22 @@ global $f;
 }
 
 function slm_userfile_wclose() {
+	global $prefixexists;
+	if(!$prefixexists) {
+	include("slm_include/prefixinclude.php");
+prefixinclude("../suds_prefix.php");
+	}
 	session_start();
-if (!isset($_SESSION['started'])) {
+if (!isset($_SESSION[$prefix.'started'])) {
 	session_regenerate_id();
-	$_SESSION['started'] = true;
+	$_SESSION[$prefix.'started'] = true;
 }
 global $f;
-	if($_SESSION['slm_userfile_winit'] == 1) {
+	if($_SESSION[$prefix.'slm_userfile_winit'] == 1) {
 	fputs($f, '?>'."\n");
 	flock($f, LOCK_UN);
 	fclose($f);
-	$_SESSION['slm_userfile_winit'] = 0;
+	$_SESSION[$prefix.'slm_userfile_winit'] = 0;
 	return 0;	
 	} else {
 	return 1;	

@@ -6,20 +6,22 @@
 </head>
 <body>
 <?php
+include("slm_include/prefixinclude.php");
+prefixinclude("suds_prefix.php");
 include("slm_include/loginform.php");
 include("slm_include/adminonly.php");
 include("slm_include/footer.php");
 slm_loginpage_sub();
-slm_adminonly("suds.php", "suds.php", "Indeks systemu SUDS");
+slm_adminonly("index.php", "slm_admin.php", "Strona główna panelu administracyjnego SLM");
 if(file_exists("slm_install.php")) {
 ?>
 <p class="slm_error">Poważne zagrożenie bezpieczeństwa - nie usunąłeś slm_install.php!</p><br /><br />
 <?php
 }
 if($_POST['auth'] == 1) {
-	include("slm_users/".$_SESSION['slm_username'].".php");
+	include("slm_users/".$_SESSION[$prefix.'slm_username'].".php");
 	if($_POST['authpass'] == $pass) {
-	$_SESSION['slm_adminpanel'] = 1;	
+	$_SESSION[$prefix.'slm_adminpanel'] = 1;	
 	} else {
 	?>
 	<p class="slm_error">Błąd: Złe hasło!</p>
@@ -27,34 +29,34 @@ if($_POST['auth'] == 1) {
 	}
 }
 if($_GET['action'] == "unauth") {
-$_SESSION['slm_modifyuser'] = NULL;
-$_SESSION['slm_adminpanel'] = 0;
+$_SESSION[$prefix.'slm_modifyuser'] = NULL;
+$_SESSION[$prefix.'slm_adminpanel'] = 0;
 }
-if($_SESSION['slm_adminpanel'] == 1) {
+if($_SESSION[$prefix.'slm_adminpanel'] == 1) {
 	if($_GET['action'] == "unmoduser") {
-	$_SESSION['slm_modifyuser'] = NULL;	
+	$_SESSION[$prefix.'slm_modifyuser'] = NULL;	
 	}
 	if($_POST['choice'] == 1) {
 		if(file_exists("slm_users/".$_POST['modusername'].".php")) {
-	$_SESSION['slm_modifyuser'] = $_POST['modusername'];	
+	$_SESSION[$prefix.'slm_modifyuser'] = $_POST['modusername'];	
 		} else {
 		?>
 		<p class="slm_error">Błąd: Użytkownik nie istnieje!</p><br />
 		<?php
 		}
 	}
-	if($_SESSION['slm_modifyuser'] != NULL) {
+	if($_SESSION[$prefix.'slm_modifyuser'] != NULL) {
 		?>
 		<h3 class="slm_header">Akcje:</h3><br />
 		<a class="slm_link" href="<?php echo $_SERVER["PHP_SELF"]; ?>?action=change" alt="change">Zmień dane użytkownika</a><br />
 		<a class="slm_link" href="<?php echo $_SERVER["PHP_SELF"]; ?>?action=ban" alt="ban">Zbanuj/Odbanuj użytkownika</a><br />
 		<a class="slm_link" href="<?php echo $_SERVER["PHP_SELF"]; ?>?action=delete" alt="delete">Usuń użytkownika</a><hr />
-		<p class="slm_adminpanel_info">Wybrany użytkownik: <?php echo $_SESSION['slm_modifyuser']; ?> (<a class="slm_link" href="<?php echo $_SERVER["PHP_SELF"]; ?>?action=unmoduser" alt="unmoduser">zmień</a>)(<a class="slm_link" href="<?php echo $_SERVER["PHP_SELF"]; ?>?action=unauth" alt="unauth">wyjdź</a>)</p><hr />
+		<p class="slm_adminpanel_info">Wybrany użytkownik: <?php echo $_SESSION[$prefix.'slm_modifyuser']; ?> (<a class="slm_link" href="<?php echo $_SERVER["PHP_SELF"]; ?>?action=unmoduser" alt="unmoduser">zmień</a>)(<a class="slm_link" href="<?php echo $_SERVER["PHP_SELF"]; ?>?action=unauth" alt="unauth">wyjdź</a>)</p><hr />
 		<?php
 		if($_GET['action'] == "change") {
 			if($_POST['changed'] == 1) {
 			if($_POST['newpass'] == $_POST['newpasschk']) {
-			$fn="slm_users/".$_SESSION['slm_modifyuser'].".php";
+			$fn="slm_users/".$_SESSION[$prefix.'slm_modifyuser'].".php";
 			unlink($fn);
 			$f = fopen($fn, 'w');
 			flock($f, LOCK_EX);
@@ -74,7 +76,7 @@ if($_SESSION['slm_adminpanel'] == 1) {
 			<?php
 			}
 			} else {
-		include("slm_users/".$_SESSION['slm_modifyuser'].".php");
+		include("slm_users/".$_SESSION[$prefix.'slm_modifyuser'].".php");
 		if($type == "admin") {
 		?>
 		To konto jest kontem administratora. Nie masz uprawnień do jego edycji, można je zmienić tylko przez zmianę pliku na serwerze (do głównego administratora).
@@ -93,7 +95,7 @@ if($_SESSION['slm_adminpanel'] == 1) {
 		}
 		} else if($_GET['action'] == "ban") {
 			if($_POST['banaction'] == "ban") {
-			$fn="slm_bans/".$_SESSION['slm_modifyuser'].".php";
+			$fn="slm_bans/".$_SESSION[$prefix.'slm_modifyuser'].".php";
 			$f=fopen($fn,'w');
 			flock($f,LOCK_EX);
 			fputs($f,'<?php'."\n");
@@ -105,13 +107,13 @@ if($_SESSION['slm_adminpanel'] == 1) {
 			<p class="slm_success">SLM: Ban dodany pomyślnie.</p>
 			<?php
 			} else if($_POST['banaction'] == "unban") {
-				unlink("slm_bans/".$_SESSION['slm_modifyuser'].".php");
+				unlink("slm_bans/".$_SESSION[$prefix.'slm_modifyuser'].".php");
 				?>
 			<p class="slm_success">SLM: Ban usunięty pomyślnie.</p>
 			<?php
 			} else {
-		if(file_exists("slm_bans/".$_SESSION['slm_modifyuser'].".php")) {
-		include("slm_bans/".$_SESSION['slm_modifyuser'].".php");
+		if(file_exists("slm_bans/".$_SESSION[$prefix.'slm_modifyuser'].".php")) {
+		include("slm_bans/".$_SESSION[$prefix.'slm_modifyuser'].".php");
 		?>
 		<p class="slm_baninfo">Ten użytkownik jest zbanowany.<br />
 		<?php
@@ -131,7 +133,7 @@ if($_SESSION['slm_adminpanel'] == 1) {
 		</form>
 		<?php
 		} else {
-		include("slm_users/".$_SESSION['slm_modifyuser'].".php");
+		include("slm_users/".$_SESSION[$prefix.'slm_modifyuser'].".php");
 		if($type == "admin") {
 		?>
 		To konto jest kontem administratora. Nie masz uprawnień do jego banowania, można je zbanować tylko przez zmianę pliku na serwerze (do głównego administratora).
@@ -149,10 +151,10 @@ if($_SESSION['slm_adminpanel'] == 1) {
 		}
 		} else if($_GET['action'] == "delete") {
 			if($_POST['delete'] == 1) {
-			unlink("slm_users/".$_SESSION['slm_modifyuser'].".php");
-			$_SESSION['slm_modifyuser'] = NULL;
+			unlink("slm_users/".$_SESSION[$prefix.'slm_modifyuser'].".php");
+			$_SESSION[$prefix.'slm_modifyuser'] = NULL;
 			} else {
-		include("slm_users/".$_SESSION['slm_modifyuser'].".php");
+		include("slm_users/".$_SESSION[$prefix.'slm_modifyuser'].".php");
 		if($type == "admin") {
 		?>
 		To konto jest kontem administratora. Nie masz uprawnień do jego usuwania, można je usunąć tylko przez usunięcie danych z serwera (do głównego administratora).
@@ -187,7 +189,7 @@ if($_SESSION['slm_adminpanel'] == 1) {
 </form>
 <?php
 }
-slm_footer("suds.php", "Indeks systemu SUDS");
+slm_footer("index.php", "Indeks");
 ?>
 </body>
 </html>

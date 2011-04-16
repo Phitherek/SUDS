@@ -1,18 +1,23 @@
 <?php
 function slm_passwd() {
+	global $prefixexists;
+	if(!$prefixexists) {
+	include("slm_include/prefixinclude.php");
+	prefixinclude("../suds_prefix.php");
+	}
 	session_start();
-	if (!isset($_SESSION['started'])) {
+	if (!isset($_SESSION[$prefix.'started'])) {
 	session_regenerate_id();
-	$_SESSION['started'] = true;
+	$_SESSION[$prefix.'started'] = true;
 }
-	if($_SESSION['slm_loggedin'] == 1) {
+	if($_SESSION[$prefix.'slm_loggedin'] == 1) {
 		if($_POST['change'] == 1) {
 		$error=0;
-		if(file_exists("slm_users/".$_SESSION['slm_username'].".php")) {
-		include("slm_users/".$_SESSION['slm_username'].".php");
+		if(file_exists("slm_users/".$_SESSION[$prefix.'slm_username'].".php")) {
+		include("slm_users/".$_SESSION[$prefix.'slm_username'].".php");
 		if($_POST['oldpass'] == $pass) {
 			if($_POST['newpass'] == $_POST['newpasschk']) {
-			$fn="slm_users/".$_SESSION['slm_username'].".php";
+			$fn="slm_users/".$_SESSION[$prefix.'slm_username'].".php";
 			unlink($fn);
 			$f = fopen($fn, 'w');
 			flock($f, LOCK_EX);

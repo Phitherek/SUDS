@@ -1,13 +1,18 @@
 <?php
 function slm_userinfo($showlink=1,$showunlogged=1,$loginpage="login.php",$logoutpage="logout.php") {
+	global $prefixexists;
+	if(!$prefixexists) {
+	include("slm_include/prefixinclude.php");
+prefixinclude("../suds_prefix.php");
+	}
 session_start();
-if (!isset($_SESSION['started'])) {
+if (!isset($_SESSION[$prefix.'started'])) {
 	session_regenerate_id();
-	$_SESSION['started'] = true;
+	$_SESSION[$prefix.'started'] = true;
 }
-if($_SESSION['slm_loggedin'] == 1) {
+if($_SESSION[$prefix.'slm_loggedin'] == 1) {
 ?>
-<p class="slm_text">Jesteś zalogowany/a za pomocą systemu SLM jako: <?php echo $_SESSION['slm_username']; ?>!<br />
+<p class="slm_text">Jesteś zalogowany/a za pomocą systemu SLM jako: <?php echo $_SESSION[$prefix.'slm_username']; ?>!<br />
 <?php
 if($showlink == 1) {
 ?>
