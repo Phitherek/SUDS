@@ -189,7 +189,7 @@ if($_SESSION[$prefix.'slm_adminpanel'] == 1) {
 </form>
 <?php
 }
-slm_footer("index.php", "Indeks");
+slm_footer("suds.php", "Indeks systemu SUDS");
 ?>
 </body>
 </html>

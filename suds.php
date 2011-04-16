@@ -59,7 +59,7 @@ if(file_exists("suds_settings.php")) {
 <?php
 }
 ?>
-<a class="suds_admin" href="suds_mod.php" title="Moderacja">Moderacja</a><br />
+<a class="suds_admin" href="suds_mod.php" title="Moderacja">Moderacja SUDS</a><br />
 <hr />
 <p class="suds_footer">Powered by SUDS | &copy; 2010-2011 by Phitherek_<br />
 MOD: SLMlock | &copy; 2010-2011 by Phitherek_ | uses SLM &copy; 2010-2011 by Phitherek</p>

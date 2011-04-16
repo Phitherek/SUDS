@@ -164,6 +164,9 @@ Hasło: <input type="password" name="password" /><br />
 <input type="hidden" name="login" value="1" />
 <input type="submit" value="Zaloguj" /><br /><br />
 </form>
+<hr />
+<p class="suds_footer">Powered by SUDS | &copy; 2010-2011 by Phitherek_<br />
+MOD: SLMlock | &copy; 2010-2011 by Phitherek_ | uses SLM &copy; 2010-2011 by Phitherek</p>
 <?php
 die();
 }
