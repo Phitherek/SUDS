@@ -6,20 +6,41 @@
 </head>
 <body>
 <?php
+if($_POST['setprefix'] == 1) {
+$prefixfile=fopen("suds_prefix.php","w");
+flock($prefixfile, LOCK_EX);
+fputs($prefixfile, '<?php'."\n");
+fputs($prefixfile, '$prefix="'.$_POST['prefix'].'";'."\n");
+fputs($prefixfile, '?>');
+flock($prefixfile, LOCK_UN);
+fclose($prefixfile);
+if(file_exists("suds_prefix.php")) {
+echo("Prefiks został zapisany pomyślnie!<br />");	
+} else {
+echo("Nie udało się zapisać pliku z prefiksem! Sprawdź uprawnienia katalogu i spróbuj ponownie!<br />");	
+}
+}
+if(file_exists("suds_prefix.php")) {
+include("suds_prefix.php");
+$prefixexists = true;
+} else {
+$prefixexists = false;	
+}
+if($prefixexists == true) {
 session_start();
-if (!isset($_SESSION['started'])) {
+if (!isset($_SESSION[$prefix.'started'])) {
 session_regenerate_id();
-$_SESSION['started'] = true;
+$_SESSION[$prefix.'started'] = true;
 }
 if(file_exists("suds_settings.php")) {
 	include("suds_settings.php");
 	if($_POST['modlogin'] == 1) {
 	if($_POST['modlogin_pass'] == $modpass) {
-	$_SESSION['mod_login'] = 1;
+	$_SESSION[$prefix.'mod_login'] = 1;
 	session_regenerate_id();
 	}
 	}
-	if($_SESSION['mod_login'] == 1) {
+	if($_SESSION[$prefix.'mod_login'] == 1) {
 	if(file_exists("install.php")) {
 	?>
 	<p class="suds_error">Poważne zagrożenie bezpieczeństwa - nie usunąłeś install.php!</p><br /><br />
@@ -37,7 +58,7 @@ if(file_exists("suds_settings.php")) {
 	if($_GET['action'] == "show") {
 			$baza=mysql_connect($serek, $dbuser, $dbpass) or die("Nie można się połączyć z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
 	mysql_select_db($dbname);
-	$dball=mysql_query("SELECT * FROM ".$prefix."files_main");
+	$dball=mysql_query("SELECT * FROM ".$dbprefix."files_main");
 	$rows=mysql_num_rows($dball);
 	if($rows != NULL) {
 		$catall=mysql_query("SELECT * FROM ".$prefix."files_categories");
@@ -47,21 +68,21 @@ if(file_exists("suds_settings.php")) {
 			<h3 class="suds_category">Bez kategorii:</h3><hr />
 			<?php
 		for($id = 1; $id <= $rows; $id++) {
-			$query=mysql_query("SELECT filename FROM ".$prefix."files_main WHERE id=".$id);
+			$query=mysql_query("SELECT filename FROM ".$dbprefix."files_main WHERE id=".$id);
 			$filename=mysql_fetch_array($query);
-		$query=mysql_query("SELECT `desc` FROM ".$prefix."files_main WHERE id=".$id);
+		$query=mysql_query("SELECT `desc` FROM ".$dbprefix."files_main WHERE id=".$id);
 		$desc=mysql_fetch_array($query);
-		if($filename != NULL) {
-		if($desc != NULL) {
+		if($filename['filename'] != NULL) {
+		if($desc['desc'] != NULL) {
 		?>
-		<a class = "suds_link_ok" href="suds_files/<?php echo $filename['filename']; ?>"><?php echo $desc['desc']; ?></a><br />
+		<a class = "suds_link_ok" href="suds_files/<?php echo rawurlencode($filename['filename']); ?>"><?php echo $desc['desc']; ?></a><br />
 		<?php
 		} else {
 		?>
-		<a class = "suds_link_nodesc" href="suds_files/<?php echo $filename['filename']; ?>"><?php echo $filename['filename']; ?></a><br />
+		<a class = "suds_link_nodesc" href="suds_files/<?php echo rawurlencode($filename['filename']); ?>"><?php echo $filename['filename']; ?></a><br />
 		<?php
 		}
-		} else if($desc != NULL) {
+		} else if($desc['desc'] != NULL) {
 		?>
 		<p class="suds_desconly"><?php echo $desc['desc']; ?> (Brak odnośnika!)</p><br />
 		<?php
@@ -70,7 +91,7 @@ if(file_exists("suds_settings.php")) {
 		<p class="suds_broken">Zły wpis (brak odnośnika i opisu)!</p><br />
 		<?php
 		}
-		$query=mysql_query("SELECT added FROM ".$prefix."files_main WHERE id=".$id);
+		$query=mysql_query("SELECT added FROM ".$dbprefix."files_main WHERE id=".$id);
 		$added=mysql_fetch_array($query);
 		?>
 			<p class="suds_date">Ostatnia modyfikacja pliku: <?php echo $added['added']; ?></p><br />
@@ -129,12 +150,12 @@ if(file_exists("suds_settings.php")) {
 			<hr />
 			<?php
 				} else {
-				$query=mysql_query("SELECT `category` FROM ".$prefix."files_categories WHERE `id`=".$catid);
+				$query=mysql_query("SELECT `category` FROM ".$dbprefix."files_categories WHERE `id`=".$catid);
 				$category=mysql_fetch_array($query);
 				?>
 				<h3 class="suds_category">Kategoria: <?php echo $category['category']; ?></h3><hr />
 				<?php
-				$query=mysql_query("SELECT `id`,`filename`,`desc`,`added` FROM ".$prefix."files_main WHERE `category`=".$catid);
+				$query=mysql_query("SELECT `id`,`filename`,`desc`,`added` FROM ".$dbprefix."files_main WHERE `category`=".$catid);
 			while($row = mysql_fetch_array($query)) {
 		if($row['filename'] != NULL) {
 		if($row['desc'] != NULL) {
@@ -185,10 +206,10 @@ if(file_exists("suds_settings.php")) {
 		if(isset($_FILES['upfile'])) {
 		$baza=mysql_connect($serek,$dbuser,$dbpass) or die("Nie można się połączyć z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
 		mysql_select_db($dbname);
-		$dball=mysql_query("SELECT * FROM ".$prefix."files_main");
+		$dball=mysql_query("SELECT * FROM ".$dbprefix."files_main");
 		$numrows=mysql_num_rows($dball);
 		$ai=$numrows+1;
-		$query=mysql_query("ALTER TABLE ".$prefix."files_main AUTO_INCREMENT = ".$ai);
+		$query=mysql_query("ALTER TABLE ".$dbprefix."files_main AUTO_INCREMENT = ".$ai);
 		if($query != 1) {
 		?>
 		<p class="suds_error">Nie udało się ustawić poprawnej wartości AUTO_INCREMENT!</p>
@@ -200,7 +221,8 @@ if(file_exists("suds_settings.php")) {
 			<?php
 			} else {
 			if(move_uploaded_file($_FILES['upfile']['tmp_name'],"./suds_files/".$_FILES['upfile']['name'])) {
-		$query=mysql_query("INSERT INTO ".$prefix."files_main VALUES (NULL,".'"'.$_FILES['upfile']['name'].'"'.",".'"'.$_POST['updesc'].'"'.",".$_POST['category'].",NULL)");
+
+		$query=mysql_query("INSERT INTO ".$dbprefix."files_main VALUES (NULL,".'"'.$_FILES['upfile']['name'].'"'.",".'"'.$_POST['updesc'].'"'.",NULL)");
 		if($query == 1) {
 		?>
 		<p class="suds_info">Plik został przesłany!</p><br />
@@ -264,7 +286,7 @@ if(file_exists("suds_settings.php")) {
 	} else if($_GET['action'] == "categories_show") {
 		$baza=mysql_connect($serek,$dbuser,$dbpass) or die("Nie można się połączyć z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
 		mysql_select_db($dbname);
-		$catall=mysql_query("SELECT * FROM ".$prefix."files_categories");
+		$catall=mysql_query("SELECT * FROM ".$dbprefix."files_categories");
 		$catrows=mysql_num_rows($catall);
 		if($catrows == NULL) {
 			?>
@@ -293,16 +315,16 @@ if(file_exists("suds_settings.php")) {
 			if($_POST['category'] != NULL) {
 			$baza=mysql_connect($serek,$dbuser,$dbpass) or die("Nie można się połączyć z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
 		mysql_select_db($dbname);
-		$dball=mysql_query("SELECT * FROM ".$prefix."files_categories");
+		$dball=mysql_query("SELECT * FROM ".$dbprefix."files_categories");
 		$numrows=mysql_num_rows($dball);
 		$ai=$numrows+1;
-		$query=mysql_query("ALTER TABLE ".$prefix."files_categories AUTO_INCREMENT = ".$ai);
+		$query=mysql_query("ALTER TABLE ".$dbprefix."files_categories AUTO_INCREMENT = ".$ai);
 		if($query != 1) {
 		?>
 		<p class="suds_error">Nie udało się ustawić poprawnej wartości AUTO_INCREMENT!</p>
 		<?php
 		} else {
-		$query=mysql_query("INSERT INTO ".$prefix."files_categories VALUES (NULL,".'"'.$_POST['category'].'")');
+		$query=mysql_query("INSERT INTO ".$dbprefix."files_categories VALUES (NULL,".'"'.$_POST['category'].'")');
 		if($query == 1) {
 		?>
 		<p class="suds_info">Kategoria została dodana!</p><br />
@@ -331,7 +353,7 @@ if(file_exists("suds_settings.php")) {
 				if($_POST['catedset'] == 1) {
 		$baza=mysql_connect($serek,$dbuser,$dbpass) or die("Nie można połączyć się z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
 		mysql_select_db($dbname);
-		$query=mysql_query("UPDATE ".$prefix."files_categories SET `category`=".'"'.$_POST['category'].'"'." WHERE `id`=".$_POST['id']);
+		$query=mysql_query("UPDATE ".$dbprefix."files_categories SET `category`=".'"'.$_POST['category'].'"'." WHERE `id`=".$_POST['id']);
 		if($query == 1) {
 		?>
 		<p class="suds_info">Kategoria zaktualizowana pomyślnie!</p><br />
@@ -346,7 +368,7 @@ if(file_exists("suds_settings.php")) {
 		mysql_select_db($dbname);
 		$id = $_POST['id'];
 		if($id != NULL) {
-		$query=mysql_query("SELECT `category` FROM ".$prefix."files_categories WHERE `id`=".$id);
+		$query=mysql_query("SELECT `category` FROM ".$dbprefix."files_categories WHERE `id`=".$id);
 		$category=mysql_fetch_array($query);
 		?>
 		<h3 class="suds_title">Modyfikacja kategorii:</h3><br />
@@ -373,20 +395,20 @@ if(file_exists("suds_settings.php")) {
 		if($id != NULL) {
 		$baza=mysql_connect($serek,$dbuser,$dbpass) or die("Nie można połączyć się z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
 		mysql_select_db($dbname);
-		$dball=mysql_query("SELECT * FROM ".$prefix."files_categories");
+		$dball=mysql_query("SELECT * FROM ".$dbprefix."files_categories");
 		$rows=mysql_num_rows($dball);
 		$all=mysql_fetch_array($dball);
-		$query=mysql_query("DELETE FROM ".$prefix."files_categories WHERE `id`=".$id);
+		$query=mysql_query("DELETE FROM ".$dbprefix."files_categories WHERE `id`=".$id);
 		if($query == 1) {
 		?>
 		<p class=suds_info>Kategoria została pomyślnie usunięta!</p><br />
 		<?php
-		$query=mysql_query("UPDATE ".$prefix."files_main SET `category`=0 WHERE `category`=".$id);
+		$query=mysql_query("UPDATE ".$dbprefix."files_main SET `category`=0 WHERE `category`=".$id);
 			$nid=$id+1;
 			if($nid<=$rows) {
 			for($i=$nid;$i<=$rows;$i++) {
 			$sid=$i-1;
-			$query=mysql_query("UPDATE ".$prefix."categories_main SET `id`=".$sid." WHERE `id`=".$i);
+			$query=mysql_query("UPDATE ".$dbprefix."categories_main SET `id`=".$sid." WHERE `id`=".$i);
 			}
 			mysql_close($baza);
 			}
@@ -400,7 +422,8 @@ if(file_exists("suds_settings.php")) {
 		if($_POST['edset'] == 1) {
 		$baza=mysql_connect($serek,$dbuser,$dbpass) or die("Nie można połączyć się z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
 		mysql_select_db($dbname);
-		$query=mysql_query("UPDATE ".$prefix."files_main SET `desc`=".'"'.$_POST['desc'].'", `category`='.$_POST['category']." WHERE `id`=".$_POST['id']);
+		$query=mysql_query("UPDATE ".$dbprefix."files_main SET `desc`=".'"'.$_POST['desc'].'", `category`='.$_POST['category']." WHERE `id`=".$_POST['id']);
+		$query=mysql_query("UPDATE ".$dbprefix."files_main SET `desc`=".'"'.$_POST['desc'].'"'." WHERE id=".$_POST['id']);
 		if($query == 1) {
 		?>
 		<p class="suds_info">Dane pliku zaktualizowane pomyślnie!</p><br />
@@ -415,11 +438,11 @@ if(file_exists("suds_settings.php")) {
 		mysql_select_db($dbname);
 		$id = $_POST['id'];
 		if($id != NULL) {
-		$query=mysql_query("SELECT `desc` FROM ".$prefix."files_main WHERE `id`=".$id);
+		$query=mysql_query("SELECT `desc` FROM ".$dbprefix."files_main WHERE id=".$id);
 		$desc=mysql_fetch_array($query);
-		$catall=mysql_query("SELECT * FROM ".$prefix."files_categories");
+		$catall=mysql_query("SELECT * FROM ".$dbprefix."files_categories");
 		$catrows=mysql_num_rows($catall);
-		$catq=mysql_query("SELECT `category` FROM ".$prefix."files_main WHERE `id`=".$id);
+		$catq=mysql_query("SELECT `category` FROM ".$dbprefix."files_main WHERE `id`=".$id);
 		$cat=mysql_fetch_array($cat);
 		?>
 		<h3 class="suds_title">Modyfikacja danych pliku:</h3><br />
@@ -457,11 +480,11 @@ if(file_exists("suds_settings.php")) {
 		if($id != NULL) {
 		$baza=mysql_connect($serek,$dbuser,$dbpass) or die("Nie można połączyć się z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
 		mysql_select_db($dbname);
-		$dball=mysql_query("SELECT * FROM ".$prefix."files_main");
+		$dball=mysql_query("SELECT * FROM ".$dbprefix."files_main");
 		$rows=mysql_num_rows($dball);
 		$all=mysql_fetch_array($dball);
 		$delname=$all['filename'];
-		$query=mysql_query("DELETE FROM ".$prefix."files_main WHERE id=".$id);
+		$query=mysql_query("DELETE FROM ".$dbprefix."files_main WHERE id=".$id);
 		if($query == 1) {
 		chdir("suds_files");
 		unlink($delname);
@@ -472,11 +495,11 @@ if(file_exists("suds_settings.php")) {
 			$nid=$id+1;
 			if($nid<=$rows) {
 			for($i=$nid;$i<=$rows;$i++) {
-			$query=mysql_query("SELECT added FROM ".$prefix."files WHERE id=".$i);
+			$query=mysql_query("SELECT added FROM ".$dbprefix."files WHERE id=".$i);
 			$added=mysql_fetch_array($query);
 			$sid=$i-1;
-			$query=mysql_query("UPDATE ".$prefix."files_main SET id=".$sid." WHERE id=".$i);
-			$query=mysql_query("UPDATE ".$prefix."files_main SET added=".$added['added']." WHERE id=".$sid);
+			$query=mysql_query("UPDATE ".$dbprefix."files_main SET id=".$sid." WHERE id=".$i);
+			$query=mysql_query("UPDATE ".$dbprefix."files_main SET added=".$added['added']." WHERE id=".$sid);
 			}
 			mysql_close($baza);
 			}
@@ -487,7 +510,7 @@ if(file_exists("suds_settings.php")) {
 		}
 		}
 	} else if($_GET['action'] == "logout") {
-		$_SESSION['mod_login'] = 0;
+		$_SESSION[$prefix.'mod_login'] = 0;
 		?>
 		<p class="suds_info">Wylogowano Cię z systemu moderacji SUDS! Możesz teraz przejść na stronę główną systemu, lub zalogować się jeszcze raz, ponownie wchodząc na tą stronę.</p>
 		<?php
@@ -511,10 +534,20 @@ if(file_exists("suds_settings.php")) {
 <p class="suds_error">Plik ustawień nie istnieje! Czy na pewno uruchomiłeś install.php?</p>
 <?php
 }
+} else {
+echo("Ze względów bezpieczeństwa wymagane jest podanie prefiksu dla tej instalacji SUDS. NIGDY nie instaluj dwóch systemów z tym samym prefiksem! Jeżeli jest to twoja pierwsza i jedyna instalacja SUDS, zaleca się pozostawienie domyślnego prefiksu.<br />");
+?>
+<form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
+<input type="text" name="prefix" value="suds_" /><br />
+<input type="hidden" name="setprefix" value="1" />
+<input type="submit" value="Ustaw prefiks i kontynuuj" />
+</form>
+<?php
+}
 ?>
 <br />
 <a class="suds_main_link" href="suds.php" title="Indeks systemu SUDS">Indeks systemu SUDS</a><hr />
-<p class="suds_footer">Powered by SUDS | &copy; 2010 by Phitherek_<br />
-MOD: Categories | &copy; 2010 by Phitherek_</p>
+<p class="suds_footer">Powered by SUDS</a> | &copy; 2010-2011 by Phitherek_<br />
+MOD: Categories | &copy; 2010-2011 by Phitherek_</p>
 </body>
 </html>
