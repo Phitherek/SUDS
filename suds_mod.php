@@ -61,8 +61,8 @@ if(file_exists("suds_settings.php")) {
 	$dball=mysql_query("SELECT * FROM ".$dbprefix."files_main");
 	$rows=mysql_num_rows($dball);
 	if($rows != NULL) {
-		$catall=mysql_query("SELECT * FROM ".$prefix."files_categories");
-		$catrows=mysql_num_rows($dball);
+		$catall=mysql_query("SELECT * FROM ".$dbprefix."files_categories");
+		$catrows=mysql_num_rows($catall);
 		if($catrows == NULL) {
 			?>
 			<h3 class="suds_category">Bez kategorii:</h3><hr />
@@ -107,12 +107,14 @@ if(file_exists("suds_settings.php")) {
 		<?php
 		}
 		} else {
-			for($catid = 0; $catid < $catrows; $catid++) {
+			for($catid = 0; $catid <= $catrows; $catid++) {
 				if($catid == 0) {
+				$query=mysql_query("SELECT `id`,`filename`,`desc`,`added` FROM ".$dbprefix."files_main WHERE `category`=0");
+				$crows = mysql_num_rows($query);
+				if($crows != NULL) {
 				?>
 			<h3 class="suds_category">Bez kategorii:</h3><hr />
 			<?php
-			$query=mysql_query("SELECT `id`,`filename`,`desc`,`added` FROM ".$prefix."files_main WHERE `category`=0");
 			while($row = mysql_fetch_array($query)) {
 		if($row['filename'] != NULL) {
 		if($row['desc'] != NULL) {
@@ -146,16 +148,19 @@ if(file_exists("suds_settings.php")) {
 		<br /><br />
 		<?php
 			}
+				}
 			?>
 			<hr />
 			<?php
 				} else {
 				$query=mysql_query("SELECT `category` FROM ".$dbprefix."files_categories WHERE `id`=".$catid);
 				$category=mysql_fetch_array($query);
+				$query=mysql_query("SELECT `id`,`filename`,`desc`,`added` FROM ".$dbprefix."files_main WHERE `category`=".$catid);
+				$crows = mysql_num_rows($query);
+				if($crows != NULL) {
 				?>
 				<h3 class="suds_category">Kategoria: <?php echo $category['category']; ?></h3><hr />
 				<?php
-				$query=mysql_query("SELECT `id`,`filename`,`desc`,`added` FROM ".$dbprefix."files_main WHERE `category`=".$catid);
 			while($row = mysql_fetch_array($query)) {
 		if($row['filename'] != NULL) {
 		if($row['desc'] != NULL) {
@@ -195,6 +200,7 @@ if(file_exists("suds_settings.php")) {
 			}
 		}
 		}
+		}
 	} else {
 	?>
 <p class="suds_info">Brak rekordów w bazie danych</p>
@@ -222,7 +228,7 @@ if(file_exists("suds_settings.php")) {
 			} else {
 			if(move_uploaded_file($_FILES['upfile']['tmp_name'],"./suds_files/".$_FILES['upfile']['name'])) {
 
-		$query=mysql_query("INSERT INTO ".$dbprefix."files_main VALUES (NULL,".'"'.$_FILES['upfile']['name'].'"'.",".'"'.$_POST['updesc'].'"'.",NULL)");
+		$query=mysql_query("INSERT INTO ".$dbprefix."files_main VALUES (NULL,".'"'.$_FILES['upfile']['name'].'"'.",".'"'.$_POST['updesc'].'",'.$_POST['category'].",NULL)");
 		if($query == 1) {
 		?>
 		<p class="suds_info">Plik został przesłany!</p><br />
@@ -443,7 +449,7 @@ if(file_exists("suds_settings.php")) {
 		$catall=mysql_query("SELECT * FROM ".$dbprefix."files_categories");
 		$catrows=mysql_num_rows($catall);
 		$catq=mysql_query("SELECT `category` FROM ".$dbprefix."files_main WHERE `id`=".$id);
-		$cat=mysql_fetch_array($cat);
+		$cat=mysql_fetch_array($catq);
 		?>
 		<h3 class="suds_title">Modyfikacja danych pliku:</h3><br />
 		<form action="<?php echo $_SERVER["PHP_SELF"]; ?>?action=file_edit" method="post">

@@ -13,8 +13,8 @@ if(file_exists("suds_settings.php")) {
 	$dball=mysql_query("SELECT * FROM ".$dbprefix."files_main");
 	$rows=mysql_num_rows($dball);
 	if($rows != NULL) {
-		$catall=mysql_query("SELECT * FROM ".$prefix."files_categories");
-		$catrows=mysql_num_rows($dball);
+		$catall=mysql_query("SELECT * FROM ".$dbprefix."files_categories");
+		$catrows=mysql_num_rows($catall);
 		if($catrows == NULL) {
 			?>
 			<h3 class="suds_category">Bez kategorii:</h3><hr />
@@ -47,24 +47,18 @@ if(file_exists("suds_settings.php")) {
 		$added=mysql_fetch_array($query);
 		?>
 			<p class="suds_date">Ostatnia modyfikacja pliku: <?php echo $added['added']; ?></p><br />
-		<form action="<?php echo $_SERVER["PHP_SELF"]; ?>?action=file_edit" method="post">
-		<input type="hidden" name="id" value=<?php echo $id; ?> />
-		<input type="submit" value="Edytuj" />
-		</form>
-		<form action="<?php echo $_SERVER["PHP_SELF"]; ?>?action=file_delete" method="post">
-		<input type="hidden" name="id" value=<?php echo $id; ?> />
-		<input type="submit" value="Usuń" />
-		</form>
 		<br /><br />
 		<?php
 		}
 		} else {
-			for($catid = 0; $catid < $catrows; $catid++) {
+			for($catid = 0; $catid <= $catrows; $catid++) {
 				if($catid == 0) {
+				$query=mysql_query("SELECT `id`,`filename`,`desc`,`added` FROM ".$dbprefix."files_main WHERE `category`=0");
+				$crows = mysql_num_rows($query);
+				if($crows != NULL) {
 				?>
 			<h3 class="suds_category">Bez kategorii:</h3><hr />
 			<?php
-			$query=mysql_query("SELECT `id`,`filename`,`desc`,`added` FROM ".$prefix."files_main WHERE `category`=0");
 			while($row = mysql_fetch_array($query)) {
 		if($row['filename'] != NULL) {
 		if($row['desc'] != NULL) {
@@ -87,27 +81,22 @@ if(file_exists("suds_settings.php")) {
 		}
 		?>
 		<p class="suds_date">Ostatnia modyfikacja pliku: <?php echo $row['added']; ?></p><br />
-		<form action="<?php echo $_SERVER["PHP_SELF"]; ?>?action=file_edit" method="post">
-		<input type="hidden" name="id" value=<?php echo $row['id']; ?> />
-		<input type="submit" value="Edytuj" />
-		</form>
-		<form action="<?php echo $_SERVER["PHP_SELF"]; ?>?action=file_delete" method="post">
-		<input type="hidden" name="id" value=<?php echo $row['id']; ?> />
-		<input type="submit" value="Usuń" />
-		</form>
 		<br /><br />
 		<?php
 			}
+				}
 			?>
 			<hr />
 			<?php
 				} else {
 				$query=mysql_query("SELECT `category` FROM ".$dbprefix."files_categories WHERE `id`=".$catid);
 				$category=mysql_fetch_array($query);
+				$query=mysql_query("SELECT `id`,`filename`,`desc`,`added` FROM ".$dbprefix."files_main WHERE `category`=".$catid);
+				$crows = mysql_num_rows($query);
+				if($crows != NULL) {
 				?>
 				<h3 class="suds_category">Kategoria: <?php echo $category['category']; ?></h3><hr />
 				<?php
-				$query=mysql_query("SELECT `id`,`filename`,`desc`,`added` FROM ".$dbprefix."files_main WHERE `category`=".$catid);
 			while($row = mysql_fetch_array($query)) {
 		if($row['filename'] != NULL) {
 		if($row['desc'] != NULL) {
@@ -130,14 +119,6 @@ if(file_exists("suds_settings.php")) {
 		}
 		?>
 		<p class="suds_date">Ostatnia modyfikacja pliku: <?php echo $row['added']; ?></p><br />
-		<form action="<?php echo $_SERVER["PHP_SELF"]; ?>?action=file_edit" method="post">
-		<input type="hidden" name="id" value=<?php echo $row['id']; ?> />
-		<input type="submit" value="Edytuj" />
-		</form>
-		<form action="<?php echo $_SERVER["PHP_SELF"]; ?>?action=file_delete" method="post">
-		<input type="hidden" name="id" value=<?php echo $row['id']; ?> />
-		<input type="submit" value="Usuń" />
-		</form>
 		<br /><br />
 		<?php
 				}
@@ -145,6 +126,7 @@ if(file_exists("suds_settings.php")) {
 				<hr />
 				<?php
 			}
+		}
 		}
 		}
 	} else {
