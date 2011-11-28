@@ -2,7 +2,7 @@
 <head>
 <title>Phitherek_' s SUDS - Główny plik systemu - ten tytuł można później zmienić</title>
 <META http-equiv="content-type" content="text/html; charset=utf-8" />
-<!-- Tutaj ewentualnie dołączyć plik stylu CSS -->
+<link href="style.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <?php
