@@ -161,14 +161,52 @@ flock($ustawienia,LOCK_UN);
 fclose($ustawienia);
 if(file_exists("suds_settings.php")) {
 echo("Ustawienia zostały zapisane!<br />");
+?>
+<form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
+<input type="hidden" name="go" value="5" />
+<input type="submit" value="Kontynuuj" />
+</form>
+<?php
 } else {
 echo("Nie można było zapisać ustawień! Sprawdź, czy katalog z plikami systemu SUDS ma uprawnienia 777 (lub rwxrwxrwx), jeżeli nie, to zmień je, a następnie usuń tabelę (prefix)_files_main (i bazę danych) z serwera MySQL, zakończ sesję przeglądarki, a następnie uruchom ten plik install.php ponownie!<br />");
 }
 echo("<br /> Koniec instalacji! WAŻNE: Skasuj ten plik install.php z serwera, aby nikt nie mógł zmienić Twoich ustawień!");
 }
+} else if($step == 5) {
+echo("<h1>Ustawienia trybu ExtensionEngine</h1><br /><br />");
+if($_POST['eeset'] == 1) {
+			$eemodefile=fopen("ee_mode.php","w");
+			flock($eemodefile, LOCK_EX);
+			fputs($eemodefile, '<?php'."\n");
+			fputs($eemodefile, '$eemode="'.$_POST['eemode'].'";'."\n");
+			fputs($eemodefile, '?>');
+			flock($eemodefile, LOCK_UN);
+			fclose($eemodefile);
+			if(file_exists("ee_mode.php")) {
+				echo('<p class="smpbns_info">Ustawienia zostały zapisane pomyślnie!</p><br />');	
+			} else {
+				echo('<p class="smpbns_error">Nie udało się zapisać pliku z ustawieniami! Sprawdź uprawnienia katalogu i spróbuj ponownie!</p><br />');	
+			}
+			?>
+			<p>Koniec instalacji! WAŻNE: Skasuj ten plik install.php z serwera, aby nikt nie mógł zmienić Twoich ustawień!</p><br />
+			<?php
+		} else {
+			?>
+		<form action="<?php echo $_SERVER["PHP_SELF"];?>" method="post">
+		<select name="eemode">
+		<option value="local">Tryb lokalny</option>
+		<option value="locandrem" selected />Tryb lokalny i sieciowy</option>
+		<option value="locorrem">Tryb lokalny lub sieciowy</option>		<option value="remote">Tryb sieciowy</option>
+		</select>
+		<input type="hidden" name="eeset" value="1" />
+		<input type="hidden" name="go" value="5" />
+		<input type="submit" value="Zatwierdź" />
+		</form>
+			<?php
+}
 }
 } else {
-echo("Aby kontynuować, podaj hasło, które jest w pliku informacyjnym dołączonym do systemu: <br />");
+	echo("OSTRZEŻENIE: Modyfikacja ExtensionEngine może sprawić, że SUDS będzie się ładował bardzo powoli! W zamian ułatwia ona dodawanie rozszerzeń do SUDS. Więcej informacji w wiki projektu.<br /><br /> Aby kontynuować, podaj hasło, które jest w pliku informacyjnym dołączonym do systemu: <br />");
 ?>
 <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
 <input type="password" name="beginpass" /><br />
