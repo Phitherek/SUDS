@@ -5,6 +5,7 @@
 <link href="style.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
+	<div id="kontener">
 <?php
 if(file_exists("suds_settings.php")) {
 	include("suds_settings.php");
@@ -58,5 +59,6 @@ if(file_exists("suds_settings.php")) {
 <a class="suds_admin" href="suds_mod.php" title="Moderacja">Moderacja</a><br />
 <hr />
 <p class="suds_footer">Powered by SUDS | &copy; 2010-2011 by Phitherek_</p>
+</div>
 </body>
 </html>

@@ -5,6 +5,7 @@
 <link href="style.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
+	<div id="kontener">
 <?php
 if($_POST['setprefix'] == 1) {
 $prefixfile=fopen("suds_prefix.php","w");
@@ -284,5 +285,6 @@ echo("Ze względów bezpieczeństwa wymagane jest podanie prefiksu dla tej insta
 <br />
 <a class="suds_main_link" href="suds.php" title="Indeks systemu SUDS">Indeks systemu SUDS</a><hr />
 <p class="suds_footer">Powered by SUDS</a> | &copy; 2010-2011 by Phitherek_</p>
+</div>
 </body>
 </html>

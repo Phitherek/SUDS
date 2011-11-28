@@ -3,6 +3,14 @@ margin: 0 auto;
 
 font-size:12px;
 }
+
+#kontener
+{
+  width: 960px;	
+  margin: 0 auto;
+  
+}
+
 /*(a) – odnośnik do pliku z opisem*/
 a.suds_link_ok {
 	
