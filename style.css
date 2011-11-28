@@ -29,7 +29,7 @@ p.suds_info{
 }
 /*(p) – informacja o błędzie*/
 p.suds_error{
-	
+	color:red;
 }
 /*(a) – link do panelu moderacji (w głównym pliku SUDS)*/
 a.suds_admin{
