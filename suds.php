@@ -145,7 +145,7 @@ return(1);
 	}
 }
 }
-function extensionengine_parse_postlinks($eelist, $postid) {
+function extensionengine_parse_filelinks($eelist, $postid) {
 	$feelist = fopen('data:text/plain,'.$eelist, 'rb');
 	$action = "detect";
 	$name = "";
@@ -170,8 +170,8 @@ function extensionengine_parse_postlinks($eelist, $postid) {
 			}
 			if($parsed == "name") {
 			$action = "name";	
-			} else if($parsed == "postlink") {
-			$action = "postlink";	
+			} else if($parsed == "filelink") {
+			$action = "filelink";	
 			} else if($parsed == "end") {
 			$action = "detect";
 			}
@@ -190,12 +190,12 @@ function extensionengine_parse_postlinks($eelist, $postid) {
 			} else if($action == "name") {
 				$name = $line;
 				$action = "parse";
-			} else if($action == "postlink") {
-			echo('|<a class="ee_postlink" href="'.trim($line)."postid=".$postid.'">');
+			} else if($action == "filelink") {
+			echo('|<a class="ee_filelink" href="'.trim($line)."postid=".$postid.'">');
 			if($name == "") {
-				echo("(ExtensionEngine)(Post) Nienazwane rozszerzenie</a>");
+				echo("(ExtensionEngine)(Plik) Nienazwane rozszerzenie</a>");
 			} else {
-				echo("(ExtensionEngine)(Post) ".$name."</a>");	
+				echo("(ExtensionEngine)(Plik) ".$name."</a>");	
 			}
 			$name = "";
 			$action = "parse";
@@ -377,46 +377,46 @@ if(file_exists("suds_settings.php")) {
 		<?php
 		if($eemode == "local") {
 		if(isset($local_eelist)) {
-		extensionengine_parse_postlinks($local_eelist, $id);
+		extensionengine_parse_filelinks($local_eelist, $id);
 		}
 	} else if($eemode == "locandrem") {
 		if(isset($official_eelist)) {
 		if($official_eelist != 1 and $official_eelist != 2) {
-		extensionengine_parse_postlinks($official_eelist, $id);	
+		extensionengine_parse_filelinks($official_eelist, $id);	
 		}	
 		}
 		if(isset($custom_eelists)) {
 		foreach($custom_eelists as $custom_eelist) {
-		extensionengine_parse_postlinks($custom_eelist, $id);	
+		extensionengine_parse_filelinks($custom_eelist, $id);	
 		}
 		}
 		if(isset($local_eelist)) {
-		extensionengine_parse_postlinks($local_eelist, $id);
+		extensionengine_parse_filelinks($local_eelist, $id);
 		}
 	} else if($eemode == "locorrem") {
 		if(!isset($local_eelist)) {
 			if(isset($official_eelist)) {
 		if($official_eelist != 1 and $official_eelist != 2) {
-		extensionengine_parse_postlinks($official_eelist, $id);	
+		extensionengine_parse_filelinks($official_eelist, $id);	
 		}
 		}
 		if(isset($custom_eelists)) {
 		foreach($custom_eelists as $custom_eelist) {
-		extensionengine_parse_postlinks($custom_eelist, $id);	
+		extensionengine_parse_filelinks($custom_eelist, $id);	
 		}
 		}
 		} else {
-		extensionengine_parse_postlinks($local_eelist, $id);
+		extensionengine_parse_filelinks($local_eelist, $id);
 		}
 	} else if($eemode == "remote") {
 		if(isset($official_eelist)) {
 		if($official_eelist != 1 and $official_eelist != 2) {
-		extensionengine_parse_postlinks($official_eelist, $id);	
+		extensionengine_parse_filelinks($official_eelist, $id);	
 		}	
 		}
 		if(isset($custom_eelists)) {
 		foreach($custom_eelists as $custom_eelist) {
-		extensionengine_parse_postlinks($custom_eelist, $id);	
+		extensionengine_parse_filelinks($custom_eelist, $id);	
 		}
 		}
 	}
