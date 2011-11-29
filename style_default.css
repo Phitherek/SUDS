@@ -33,11 +33,16 @@ p.suds_date{
 }
 /*(p) – informacja techniczna*/
 p.suds_info{
+	text-align: center;
 	color: blue;
 }
 /*(p) – informacja o błędzie*/
 p.suds_error{
+	text-align: center;
 	color:red;
+	font-size:14px;
+	font-family:"Arial Narrow";
+	
 }
 /*(a) – link do panelu moderacji (w głównym pliku SUDS)*/
 a.suds_admin{
