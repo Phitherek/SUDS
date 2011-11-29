@@ -145,7 +145,7 @@ return(1);
 	}
 }
 }
-function extensionengine_parse_filelinks($eelist, $postid) {
+function extensionengine_parse_filelinks($eelist, $fileid) {
 	$feelist = fopen('data:text/plain,'.$eelist, 'rb');
 	$action = "detect";
 	$name = "";
@@ -191,7 +191,7 @@ function extensionengine_parse_filelinks($eelist, $postid) {
 				$name = $line;
 				$action = "parse";
 			} else if($action == "filelink") {
-			echo('|<a class="ee_filelink" href="'.trim($line)."postid=".$postid.'">');
+			echo('|<a class="ee_filelink" href="'.trim($line)."fileid=".$fileid.'">');
 			if($name == "") {
 				echo("(ExtensionEngine)(Plik) Nienazwane rozszerzenie</a>");
 			} else {
