@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Phitherek_' s SUDS - Instalacja</title>
+<title>Phitherek_' s SUDS - MOD: ExtensionEngine - Instalacja</title>
 <META http-equiv="content-type" content="text/html; charset=utf-8" />
 </head>
 <body>
