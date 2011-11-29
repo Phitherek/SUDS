@@ -2,9 +2,11 @@
 <head>
 <title>Phitherek_' s SUDS - System moderacji - tytuł może być później zmieniony</title>
 <META http-equiv="content-type" content="text/html; charset=utf-8" />
-<!-- Tutaj ewentualnie dołączyć plik stylu CSS -->
+<link href="style_default.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
+	<div id="kontener">
+		<p class="suds_header"></p>
 <?php
 if($_POST['setprefix'] == 1) {
 $prefixfile=fopen("suds_prefix.php","w");

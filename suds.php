@@ -2,9 +2,12 @@
 <head>
 <title>Phitherek_' s SUDS - Główny plik systemu - ten tytuł można później zmienić</title>
 <META http-equiv="content-type" content="text/html; charset=utf-8" />
-<!-- Tutaj ewentualnie dołączyć plik stylu CSS -->
+<link href="style_default.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
+	
+	<div id="kontener">
+		<p class="suds_header"></p>
 <?php
 if(file_exists("suds_settings.php")) {
 	include("suds_settings.php");
