@@ -60,6 +60,7 @@ if(file_exists("suds_settings.php")) {
 ?>
 <a class="suds_admin" href="suds_mod.php" title="Moderacja">Moderacja</a><br />
 <hr />
-<p class="suds_footer">Powered by SUDS | &copy; 2010-2011 by Phitherek_</p>
+<p class="suds_footer">Powered by SUDS | &copy; 2010-2011 by Phitherek_<br />
+Style: default | &copy; 2011 by cyryllo</p>
 </body>
 </html>
