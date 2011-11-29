@@ -279,6 +279,7 @@ if(file_exists("suds_settings.php")) {
 	<h2 class="suds_modmenu">Menu systemu moderacji:</h2><br /><br />
 	<a class="suds_modmenu" href="<?php echo $_SERVER["PHP_SELF"]; ?>?action=show" title="Wyświetl i moderuj pliki">Wyświetl i moderuj pliki</a><br />
 	<a class="suds_modmenu" href="<?php echo $_SERVER["PHP_SELF"]; ?>?action=upload" title="Dodaj nowy plik">Dodaj nowy plik</a><br />
+	<a class="suds_modmenu" href="<?php echo $_SERVER["PHP_SELF"]; ?>?action=ee_mode" title="Ustaw tryb ExtensionEngine">Ustaw tryb ExtensionEngine</a><br />
 	<?php
 	if($eemode == "local") {
 		if(isset($local_eelist)) {
