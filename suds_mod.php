@@ -521,7 +521,7 @@ if(file_exists("suds_settings.php")) {
 		<?php
 		}
 		}
-	else if($_GET['action'] == "ee_mode") {
+	} else if($_GET['action'] == "ee_mode") {
 		if($_POST['eeset'] == 1) {
 			if(file_exists("ee_mode.php")) {
 			unlink("ee_mode.php");
