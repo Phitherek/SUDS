@@ -2,7 +2,7 @@
 <head>
 <title>Phitherek_' s SUDS - System moderacji - tytuł może być później zmieniony</title>
 <META http-equiv="content-type" content="text/html; charset=utf-8" />
-<link href="style.css" rel="stylesheet" type="text/css" />
+<link href="style_default.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 	<div id="kontener">
