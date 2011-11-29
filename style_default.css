@@ -33,7 +33,7 @@ p.suds_date{
 }
 /*(p) – informacja techniczna*/
 p.suds_info{
-	
+	color: blue;
 }
 /*(p) – informacja o błędzie*/
 p.suds_error{
@@ -49,7 +49,7 @@ a.suds_main_link{
 }
 /*(p) – tekst w stopce SUDS*/
 p.suds_footer{
-	
+	text-align: center;
 }
 /*(a) – link w menu panelu moderacji SUDS*/
 a.suds_modmenu {
