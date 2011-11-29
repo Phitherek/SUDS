@@ -5,7 +5,9 @@
 <link href="style_default.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
+	
 	<div id="kontener">
+		<p class="suds_header"></p>
 <?php
 if(file_exists("suds_settings.php")) {
 	include("suds_settings.php");

@@ -6,6 +6,7 @@
 </head>
 <body>
 	<div id="kontener">
+		<p class="suds_header"></p>
 <?php
 if($_POST['setprefix'] == 1) {
 $prefixfile=fopen("suds_prefix.php","w");
