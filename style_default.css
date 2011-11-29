@@ -40,7 +40,9 @@ p.suds_broken {
 }
 /*(p) – data ostatniej modyfikacji pliku (opisu)*/
 p.suds_date{
-	
+	color:black;
+	font-size: 10px;
+	font-style: italic;
 }
 /*(p) – informacja techniczna*/
 p.suds_info{
