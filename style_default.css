@@ -13,6 +13,7 @@ font-size:12px;
   
 }
 p.suds_header{
+	
 	width: 960px;	
     margin: 0 auto;
 	height: 130px;
@@ -20,6 +21,7 @@ p.suds_header{
 	background-repeat:repeat-x;
 }
 a.suds_logo{
+	position:absolute;
 	background-image:url('images/logo.png');
 	background-repeat:no-repeat;
 	}
