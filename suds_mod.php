@@ -286,7 +286,7 @@ echo("Ze względów bezpieczeństwa wymagane jest podanie prefiksu dla tej insta
 ?>
 <br />
 <a class="suds_main_link" href="suds.php" title="Indeks systemu SUDS">Indeks systemu SUDS</a><hr />
-<p class="suds_footer">Powered by SUDS</a> | &copy; 2010-2011 by Phitherek_</p>
-</div>
+<p class="suds_footer">Powered by SUDS</a> | &copy; 2010-2011 by Phitherek_<br />
+Style: default | &copy; 2011 by cyryllo</p>
 </body>
 </html>
