@@ -5,7 +5,7 @@
 <link href="style_default.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-	<p class="suds_header"><a href="suds.php"><img src="images/logo.png" alt="logo" /></a></p>
+	<p class="suds_header"><a class= "suds_logo"  href="suds.php"><img src="images/logo.png" alt="logo" /></a></p>
 	<div id="kontener">
 		
 <?php

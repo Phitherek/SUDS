@@ -14,16 +14,19 @@ font-size:12px;
 }
 p.suds_header{
 	
+	
 	width: 960px;	
     margin: 0 auto;
 	height: 130px;
-	background-image:url('images/header_b.jpg');
-	background-repeat:repeat-x;
+	background-image:url('images/header.jpg');
+	background-repeat:no-repeat;
+	background-position: 0px 10px;
 }
 a.suds_logo{
 	position:absolute;
-	background-image:url('images/logo.png');
-	background-repeat:no-repeat;
+	height: 120px;
+	padding-top: 18px;
+	
 	}
 
 /*(a) – odnośnik do pliku z opisem*/

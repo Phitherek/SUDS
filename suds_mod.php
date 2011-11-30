@@ -8,6 +8,7 @@
 	<p class="suds_header"><a class= "suds_logo"  href="suds.php"><img src="images/logo.png" alt="logo" /></a></p>
 	<div id="kontener">
 		
+		
 <?php
 if($_POST['setprefix'] == 1) {
 $prefixfile=fopen("suds_prefix.php","w");
