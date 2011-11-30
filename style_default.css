@@ -8,18 +8,22 @@ font-size:12px;
 #kontener
 {
 	position:relative;
-	top:15px;
-    width: 960px;	
+	width: 960px;	
     margin: 0 auto;
   
 }
 p.suds_header{
-	position:relative;
-	width: 960px;
-	height: 100px;
-	background-image:url('images/suds.png');
-	background-repeat:no-repeat;
+	width: 960px;	
+    margin: 0 auto;
+	height: 130px;
+	background-image:url('images/header_b.jpg');
+	background-repeat:repeat-x;
 }
+a.suds_logo{
+	background-image:url('images/logo.png');
+	background-repeat:no-repeat;
+	}
+
 /*(a) – odnośnik do pliku z opisem*/
 a.suds_link_ok {
 	color: black;

@@ -5,9 +5,9 @@
 <link href="style_default.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-	
+	<p class="suds_header"><a href="suds.php"><img src="images/logo.png" alt="logo" /></a></p>
 	<div id="kontener">
-		<p class="suds_header"></p>
+		
 <?php
 if(file_exists("suds_settings.php")) {
 	include("suds_settings.php");
