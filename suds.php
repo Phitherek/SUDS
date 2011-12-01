@@ -2,7 +2,7 @@
 <head>
 <title>Phitherek_' s SUDS - MOD: Categories+ExtensionEngine - Główny plik systemu - ten tytuł można później zmienić</title>
 <META http-equiv="content-type" content="text/html; charset=utf-8" />
-<!-- Tutaj ewentualnie dołączyć plik stylu CSS -->
+<!-- Tutaj ewentualnie wstawić plik stylu CSS -->
 </head>
 <body>
 <?php
@@ -463,46 +463,46 @@ if(file_exists("suds_settings.php")) {
 		<?php
 		if($eemode == "local") {
 		if(isset($local_eelist)) {
-		extensionengine_parse_filelinks($local_eelist, $id);
+		extensionengine_parse_filelinks($local_eelist, $row['id']);
 		}
 	} else if($eemode == "locandrem") {
 		if(isset($official_eelist)) {
 		if($official_eelist != 1 and $official_eelist != 2) {
-		extensionengine_parse_filelinks($official_eelist, $id);	
+		extensionengine_parse_filelinks($official_eelist, $row['id']);	
 		}	
 		}
 		if(isset($custom_eelists)) {
 		foreach($custom_eelists as $custom_eelist) {
-		extensionengine_parse_filelinks($custom_eelist, $id);	
+		extensionengine_parse_filelinks($custom_eelist, $row['id']);	
 		}
 		}
 		if(isset($local_eelist)) {
-		extensionengine_parse_filelinks($local_eelist, $id);
+		extensionengine_parse_filelinks($local_eelist, $row['id']);
 		}
 	} else if($eemode == "locorrem") {
 		if(!isset($local_eelist)) {
 			if(isset($official_eelist)) {
 		if($official_eelist != 1 and $official_eelist != 2) {
-		extensionengine_parse_filelinks($official_eelist, $id);	
+		extensionengine_parse_filelinks($official_eelist, $row['id']);	
 		}
 		}
 		if(isset($custom_eelists)) {
 		foreach($custom_eelists as $custom_eelist) {
-		extensionengine_parse_filelinks($custom_eelist, $id);	
+		extensionengine_parse_filelinks($custom_eelist, $row['id']);	
 		}
 		}
 		} else {
-		extensionengine_parse_filelinks($local_eelist, $id);
+		extensionengine_parse_filelinks($local_eelist, $row['id']);
 		}
 	} else if($eemode == "remote") {
 		if(isset($official_eelist)) {
 		if($official_eelist != 1 and $official_eelist != 2) {
-		extensionengine_parse_filelinks($official_eelist, $id);	
+		extensionengine_parse_filelinks($official_eelist, $row['id']);	
 		}	
 		}
 		if(isset($custom_eelists)) {
 		foreach($custom_eelists as $custom_eelist) {
-		extensionengine_parse_filelinks($custom_eelist, $id);	
+		extensionengine_parse_filelinks($custom_eelist, $row['id']);	
 		}
 		}
 	}
@@ -546,46 +546,46 @@ if(file_exists("suds_settings.php")) {
 		<?php
 		if($eemode == "local") {
 		if(isset($local_eelist)) {
-		extensionengine_parse_filelinks($local_eelist, $id);
+		extensionengine_parse_filelinks($local_eelist, $row['id']);
 		}
 	} else if($eemode == "locandrem") {
 		if(isset($official_eelist)) {
 		if($official_eelist != 1 and $official_eelist != 2) {
-		extensionengine_parse_filelinks($official_eelist, $id);	
+		extensionengine_parse_filelinks($official_eelist, $row['id']);	
 		}	
 		}
 		if(isset($custom_eelists)) {
 		foreach($custom_eelists as $custom_eelist) {
-		extensionengine_parse_filelinks($custom_eelist, $id);	
+		extensionengine_parse_filelinks($custom_eelist, $row['id']);	
 		}
 		}
 		if(isset($local_eelist)) {
-		extensionengine_parse_filelinks($local_eelist, $id);
+		extensionengine_parse_filelinks($local_eelist, $row['id']);
 		}
 	} else if($eemode == "locorrem") {
 		if(!isset($local_eelist)) {
 			if(isset($official_eelist)) {
 		if($official_eelist != 1 and $official_eelist != 2) {
-		extensionengine_parse_filelinks($official_eelist, $id);	
+		extensionengine_parse_filelinks($official_eelist, $row['id']);	
 		}
 		}
 		if(isset($custom_eelists)) {
 		foreach($custom_eelists as $custom_eelist) {
-		extensionengine_parse_filelinks($custom_eelist, $id);	
+		extensionengine_parse_filelinks($custom_eelist, $row['id']);	
 		}
 		}
 		} else {
-		extensionengine_parse_filelinks($local_eelist, $id);
+		extensionengine_parse_filelinks($local_eelist, $row['id']);
 		}
 	} else if($eemode == "remote") {
 		if(isset($official_eelist)) {
 		if($official_eelist != 1 and $official_eelist != 2) {
-		extensionengine_parse_filelinks($official_eelist, $id);	
+		extensionengine_parse_filelinks($official_eelist, $row['id']);	
 		}	
 		}
 		if(isset($custom_eelists)) {
 		foreach($custom_eelists as $custom_eelist) {
-		extensionengine_parse_filelinks($custom_eelist, $id);	
+		extensionengine_parse_filelinks($custom_eelist, $row['id']);	
 		}
 		}
 	}
