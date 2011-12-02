@@ -119,6 +119,7 @@ $baza=mysql_connect($serek, $dbuser, $dbpass) or die("Nie można się połączy�
 	?>
 	<p class="suds_info">Brak ID kategorii! Wyświetlam listę...</p><br />
 	<?php	
+	$action="list";
 	}
 }
 if($action == "list") {
