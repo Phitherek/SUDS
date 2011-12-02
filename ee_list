@@ -1,0 +1,10 @@
+[suds_categoryview.php]
+[name]
+CategoryView
+[author]
+Phitherek_
+[date]
+2011
+[menulink]
+suds_categoryview.php?action=list
+[end]
