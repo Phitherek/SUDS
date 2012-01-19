@@ -92,6 +92,11 @@ if(file_exists("suds_settings.php")) {
 				<input type="submit" value="Edytuj opis" />
 				</form>
 				<br />
+				<form action="<?php echo $_SERVER["PHP_SELF"]; ?>?action=file_update" method="post">
+				<input type="hidden" name="id" value=<?php echo $id; ?> />
+				<input type="submit" value="Wgraj inny plik" />
+				</form>
+				<br />
 				<form action="<?php echo $_SERVER["PHP_SELF"]; ?>?action=file_delete" method="post">
 				<input type="hidden" name="id" value=<?php echo $id; ?> />
 				<input type="submit" value="Usuń" />
@@ -170,6 +175,73 @@ if(file_exists("suds_settings.php")) {
 	<br />
 	<?php
 	}
+	} else if($_GET['action'] == "file_update") {
+		$id = $_POST['id'];
+		if($id != NULL) {
+		$baza=mysql_connect($serek,$dbuser,$dbpass) or die("Nie można się połączyć z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
+		mysql_select_db($dbname);
+		if($_POST['newset'] == 1) {
+			if(isset($_FILES['upfile'])) {
+			$query=mysql_query("SELECT filename FROM ".$dbprefix."files_main WHERE id=".$id);
+			$fn=mysql_fetch_array($query);
+			if(file_exists("./suds_files/".$fn['filename'])) {
+			$r=rename("./suds_files/".$fn['filename'], "./suds_files/".$fn['filename'].".sudstmp");
+			if($r == false) {
+			die("Nie udało się zmienić nazwy pliku na nazwę tymczasową!");	
+			}
+			unlink("./suds_files/".$fn['filename']);
+			}
+			if(move_uploaded_file($_FILES['upfile']['tmp_name'],"./suds_files/".$_FILES['upfile']['name'])) {
+		$query=mysql_query("UPDATE ".$dbprefix."files_main SET filename=".'"'.$_FILES['upfile']['name'].'"'." WHERE id=".$id);
+		?>
+		<p class="suds_info">Plik został przesłany!</p><br />
+		<?php
+		unlink("./suds_files/".$fn['filename'].".sudstmp");
+			} else {
+			?>
+			<p class="suds_error">Wystąpił błąd przy przesyłaniu pliku: <?php
+			switch($_FILES['upfile']['error']) {
+		case 1: echo("Plik jest większy, niż pozwala na to serwer");break;
+		case 2: echo("Plik jest większy, niż limit SUDS");break;
+		case 3: echo("Plik został przesłany tylko częściowo");break;
+		case 4: echo("Plik nie został przesłany");break;		
+			}
+			?>
+			</p><br />
+			<?php
+			if(file_exists("./suds_files/".$fn['filename'].".sudstmp")) {
+			$r=rename("./suds_files/".$fn['filename'].".sudstmp", "./suds_files/".$fn['filename']);
+			if($r == false) {
+			die("Nie udało się przywrócić nazwy pliku! Musisz zrobić to ręcznie!");	
+			}
+			}
+			}
+		} else {
+		?>
+		<p class="suds_error">Brak pliku w przesłanych danych!</p>
+		<?php
+		}
+	} else {
+		$query=mysql_query("SELECT `desc` FROM ".$dbprefix."files_main WHERE id=".$id);
+		$desc=mysql_fetch_array($query);
+	?>
+	<h3 class="suds_title">Aktualizacja pliku:</h3><br /><br />
+	<form action="<?php echo $_SERVER["PHP_SELF"]; ?>?action=file_update" method="post" enctype="multipart/form-data">
+	Wybierz plik: <input type="file" name="upfile" /><br />
+	Opis pliku: <p class="suds_filedesc"><?php echo $desc['desc']; ?></p><br />
+	<input type="hidden" name="newset" value="1" />
+	<input type="hidden" name="id" value="<?php echo $id; ?>" />
+	<input type="submit" value="Wyślij" />
+	</form>
+	<br />
+	<?php
+	}
+	mysql_close($baza);
+		} else {
+		?>
+		<p class="suds_error">Nie udało się wczytać ID pliku! Plik nie może zostać zmodyfikowany!</p><br />
+		<?php	
+		}
 	} else if($_GET['action'] == "file_edit") {
 		if($_POST['edset'] == 1) {
 		$baza=mysql_connect($serek,$dbuser,$dbpass) or die("Nie można połączyć się z serwerem MySQL! Czy na pewno instalacja dobiegła końca?");
@@ -283,6 +355,6 @@ echo("Ze względów bezpieczeństwa wymagane jest podanie prefiksu dla tej insta
 ?>
 <br />
 <a class="suds_main_link" href="suds.php" title="Indeks systemu SUDS">Indeks systemu SUDS</a><hr />
-<p class="suds_footer">Powered by SUDS</a> | &copy; 2010-2011 by Phitherek_</p>
+<p class="suds_footer">Powered by SUDS</a> | &copy; 2010-2012 by Phitherek_</p>
 </body>
 </html>
