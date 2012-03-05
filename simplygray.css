@@ -1,0 +1,156 @@
+* {
+font-family: trebuchet ms;
+margin: 0px;
+padding: 0px;
+}
+body {
+width: 750px;
+margin: 0px auto;
+background-color:#fff;
+color:#555;
+padding: 10px;
+padding-bottom: 0px;
+
+border-right: 1px solid #333;
+border-left: 1px solid #333;
+border-bottom: 1px solid #333;
+-moz-box-shadow: 0px 0px 15px #888;
+-webkit-box-shadow: 0px 0px 15px #888;
+box-shadow: 0px 0px 15px #888;
+}
+form {
+font-size: 10pt;
+margin: 0px;
+padding: 0px;
+}
+a {
+color:#333;
+}
+
+a:visited {
+color:#505;
+}
+form {
+	float: right;
+	margin-top: -32px;
+}
+h3 {
+background: #ddd;
+font-family: trebuchet ms;
+font-size:12pt;
+text-align:center;
+padding: 5px;
+margin-top: 0px;
+margin-left: -10px;
+margin-right: -10px;
+border-top: 1px dotted black;
+border-bottom: 1px dotted black;
+margin-bottom: 15px;
+}
+hr {
+display: none;
+}
+a.suds_link_ok, a.suds_link_nodesc{
+font-size: 10pt;	
+display: block;
+max-width: 500px;
+margin-bottom: -20px;
+}
+
+p.suds_desconly {
+font-size: 10pt;
+display: inline;
+color: #f00;
+}
+
+p.suds_broken {
+font-size: 10pt;
+display: inline;
+color: #f00;	
+}
+
+p.suds_date {
+font-family: trebuchet ms;
+font-size:8pt;
+float: right;
+margin-top: -16px;
+color: #888;
+}
+
+
+
+p.suds_footer {
+font-size:8pt;
+text-align:center;
+color: #777;
+}
+
+p.suds_footer:before {
+content: "css by dude | ";
+}
+
+a.suds_main_link, a.suds_admin {
+border-top: 1px dotted black;
+margin-left: -10px;
+margin-right: -10px;
+padding: 10px;
+display: block;
+font-size:10pt;
+margin-bottom: -20px;
+}
+a.suds_admin {
+//display: none;
+//position: absolute;
+//top: -100;
+}
+p.suds_info {
+font-size:12pt;
+font-weight:bold;
+}
+
+p.suds_modlogin_text {
+font-size:12pt;
+}
+
+a.suds_modmenu {
+font-size:12pt;
+}
+
+p.suds_text {
+font-size:12pt;
+}
+
+p.suds_error {
+color:#f00;
+font-size:14pt;
+font-weight:bold;
+}
+
+p.ee_error {
+color:#f00;
+font-size:14pt;
+font-weight:bold;
+}
+
+a.ee_filelink {
+font-size:10pt;
+color:#333;
+}
+
+a.ee_menulink {
+display: block;
+font-size:10pt;
+color:#333;
+margin-bottom: -8px;
+}
+
+a.ee_adminlink {
+font-size:12pt;
+color:#333;
+}
+
+a.catlink {
+font-size: 10pt;	
+display: block;
+margin-bottom: -10px;
+}

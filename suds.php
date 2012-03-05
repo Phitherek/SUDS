@@ -2,7 +2,7 @@
 <head>
 <title>Phitherek_' s SUDS - Główny plik systemu - ten tytuł można później zmienić</title>
 <META http-equiv="content-type" content="text/html; charset=utf-8" />
-<!-- Tutaj ewentualnie dołączyć plik stylu CSS -->
+<link rel="stylesheet" name="Simply Gray style for Phitherek_' s SUDS" type="text/css" href="simplygray.css" />
 </head>
 <body>
 <?php

@@ -2,7 +2,7 @@
 <head>
 <title>Phitherek_' s SUDS - System moderacji - tytuł może być później zmieniony</title>
 <META http-equiv="content-type" content="text/html; charset=utf-8" />
-<!-- Tutaj ewentualnie dołączyć plik stylu CSS -->
+<link rel="stylesheet" name="Simply Grey style for Phitherek_' s SUDS" type="text/css" href="simplygray.css" />
 </head>
 <body>
 <?php
